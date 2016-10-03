@@ -1,7 +1,7 @@
 
 @mitchallen/maze-generator
 ==
-PUT DESCRIPTION HERE
+maze generator
 --
 * * *
 ## Installation
