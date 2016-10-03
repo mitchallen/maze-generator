@@ -53,11 +53,48 @@ describe('module smoke test', function() {
         done();
     });
 
-    it('generate method should generate a maze', function(done) {
+    it('generate 5 x 5 method should generate a maze', function(done) {
         var mazeGenerator = _module.create({ x: 5, y: 5 });
         should.exist(mazeGenerator);
         let maxDepth = 100;
         mazeGenerator.generate(maxDepth);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate 10 x 5 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 10, y: 5 });
+        should.exist(mazeGenerator);
+        let maxDepth = 100;
+        mazeGenerator.generate(maxDepth);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate 10 x 10 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 10, y: 10 });
+        should.exist(mazeGenerator);
+        let maxDepth = 100;
+        mazeGenerator.generate(maxDepth);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate 20 x 15 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 20, y: 15 });
+        should.exist(mazeGenerator);
+        let maxDepth = 300;
+        mazeGenerator.generate(maxDepth);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate 20 x 20 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 20, y: 20 });
+        should.exist(mazeGenerator);
+        let maxDepth = 300;
+        mazeGenerator.generate(maxDepth);
+        mazeGenerator.printBoard();
         done();
     });
 });
