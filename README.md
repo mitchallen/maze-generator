@@ -40,8 +40,8 @@ The method will return null if create fails, such as with bad parameters. You ca
 
     var mazeFactory = require("@mitchallen/maze-generator");
 
-    var maze1 = gridFactory.create( { x: 5, y: 10 } );
-    var maze2 = gridFactory.create( { x: 7, y: 20 } );
+    var maze1 = mazeFactory.create( { x: 5, y: 10 } );
+    var maze2 = mazeFactory.create( { x: 7, y: 20 } );
 
     if(!maze1 || !maze2) ...
 
@@ -56,7 +56,7 @@ Generates a maze by filling a connection grid with connection info. The __maxDep
 
 ### maze.printBoard()
 
-Logs to the console the generated maze.n You should examine the source for this method to determine other ways to display the generated maze.
+Logs to the console the generated maze. You should examine the source for this method to determine other ways to display the generated maze.
 
 Example:
 
@@ -110,5 +110,9 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 #### Version 0.1.0 
 
 * initial release
+
+#### Version 0.1.1 
+
+* fixed error in documentation
 
 * * *
