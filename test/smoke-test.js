@@ -42,14 +42,22 @@ describe('module smoke test', function() {
     });
 
     it('create method with no spec should return null', function(done) {
-        var grid = _module.create();
-        should.not.exist(grid);
+        var mazeGenerator = _module.create();
+        should.not.exist(mazeGenerator);
         done();
     });
 
     it('create method with valid x and y parameters should return object', function(done) {
-        var grid = _module.create({ x: 5, y: 5 });
-        should.exist(grid);
+        var mazeGenerator = _module.create({ x: 5, y: 5 });
+        should.exist(mazeGenerator);
+        done();
+    });
+
+    it('generate method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 5, y: 5 });
+        should.exist(mazeGenerator);
+        let maxDepth = 100;
+        mazeGenerator.generate(maxDepth);
         done();
     });
 });
