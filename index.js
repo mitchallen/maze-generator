@@ -47,7 +47,9 @@ module.exports.create = function (spec) {
                 }
             }
         },
-        generate: function(maxDepth) {
+        generate: function() {
+            this.fill(0);
+            let maxDepth = this.xSize * this.ySize;
             this.carveMaze(0,0,0,maxDepth);
         },
         printBorder: function() {

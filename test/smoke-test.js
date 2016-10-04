@@ -56,8 +56,7 @@ describe('module smoke test', function() {
     it('generate 5 x 5 method should generate a maze', function(done) {
         var mazeGenerator = _module.create({ x: 5, y: 5 });
         should.exist(mazeGenerator);
-        let maxDepth = 100;
-        mazeGenerator.generate(maxDepth);
+        mazeGenerator.generate();
         mazeGenerator.printBoard();
         done();
     });
@@ -65,8 +64,7 @@ describe('module smoke test', function() {
     it('generate 10 x 5 method should generate a maze', function(done) {
         var mazeGenerator = _module.create({ x: 10, y: 5 });
         should.exist(mazeGenerator);
-        let maxDepth = 100;
-        mazeGenerator.generate(maxDepth);
+        mazeGenerator.generate();
         mazeGenerator.printBoard();
         done();
     });
@@ -74,8 +72,7 @@ describe('module smoke test', function() {
     it('generate 10 x 10 method should generate a maze', function(done) {
         var mazeGenerator = _module.create({ x: 10, y: 10 });
         should.exist(mazeGenerator);
-        let maxDepth = 100;
-        mazeGenerator.generate(maxDepth);
+        mazeGenerator.generate();
         mazeGenerator.printBoard();
         done();
     });
@@ -83,8 +80,7 @@ describe('module smoke test', function() {
     it('generate 20 x 15 method should generate a maze', function(done) {
         var mazeGenerator = _module.create({ x: 20, y: 15 });
         should.exist(mazeGenerator);
-        let maxDepth = 300;
-        mazeGenerator.generate(maxDepth);
+        mazeGenerator.generate();
         mazeGenerator.printBoard();
         done();
     });
@@ -92,8 +88,17 @@ describe('module smoke test', function() {
     it('generate 20 x 20 method should generate a maze', function(done) {
         var mazeGenerator = _module.create({ x: 20, y: 20 });
         should.exist(mazeGenerator);
-        let maxDepth = 300;
-        mazeGenerator.generate(maxDepth);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate called twice should generate two valid and distinct mazes', function(done) {
+        var mazeGenerator = _module.create({ x: 10, y: 5 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        mazeGenerator.generate();
         mazeGenerator.printBoard();
         done();
     });
