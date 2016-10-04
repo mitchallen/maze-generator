@@ -47,15 +47,16 @@ The method will return null if create fails, such as with bad parameters. You ca
 
 ### maze.generate();
 
-Generates a maze by filling a connection grid with connection info. An internal maximum depth value is used as a safety valve to ensure that the recursive algorithm doesn't go on forever.
+Generates a maze by filling a connection grid with connection info. 
 
-    let maxDepth = 300;
-    maze.generate(maxDepth);
-    maze.printBoard();
+    maze.generate();
 
 ### maze.printBoard()
 
 Logs to the console the generated maze. You should examine the source for this method to determine other ways to display the generated maze.
+
+    maze.generate();
+    maze.printBoard();
 
 Example:
 
@@ -119,5 +120,9 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * now uses @mitchallen/connection-grid 0.1.3
 * generate method now fills grid with zeros before generating maze
 * max depth is now calculated automatically and no longer needs to be passed to generate method
+
+#### Version 0.1.3
+
+* updated documentation
 
 * * *
