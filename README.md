@@ -45,11 +45,38 @@ The method will return null if create fails, such as with bad parameters. You ca
 
     if(!maze1 || !maze2) ...
 
-### maze.generate();
+### maze.generate(spec = null);
 
 Generates a maze by filling a connection grid with connection info. 
 
     maze.generate();
+    
+#### maze.generate(spec.mask = array)
+
+Generates a maze with masked off cells.
+
+    let spec = {
+        mask: [
+            { c: 2, r: 3 },
+            { c: 2, r: 4 }
+        ]
+    };
+    mazeGenerator.generate(spec);
+    
+#### maze.generate(spec.start = array)
+
+Generates a maze starting at a cell other than 0,0. Useful when you want to mask off 0,0.
+
+    let spec = {
+        start: { c: 3, r: 3 },
+        mask: [
+            { c: 0, r: 0 },
+            { c: 0, r: 1 },
+            { c: 1, r: 0 },
+            { c: 1, r: 1 }
+        ]
+    };
+    mazeGenerator.generate(spec);
 
 ### maze.printBoard()
 
@@ -124,5 +151,9 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 #### Version 0.1.3
 
 * updated documentation
+
+#### Version 0.1.4
+
+* added __start__ and __mask__ options to __generate__ method
 
 * * *

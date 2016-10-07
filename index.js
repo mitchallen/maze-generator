@@ -32,6 +32,7 @@ module.exports.create = function (spec) {
                 console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
                 return; 
             }
+
             if(!this.isCell(x,y)) { return; }
             let dirs = this.getShuffledNeighborDirs( x, y );
             for( var key in dirs ) {
@@ -40,17 +41,41 @@ module.exports.create = function (spec) {
                 if(n===null) {
                     continue;
                 }
-                if(this.isCell(n.x, n.y) && !this.hasConnections(n.x, n.y)) {
+
+                if(this.isMasked(n.x,n.y)) {
+                    continue;
+                }
+ 
+                if(
+                    this.isCell(n.x, n.y) 
+                    && !this.hasConnections(n.x, n.y)
+                ) {
                     // Connect cell to neighbor
                     this.connectUndirected( x, y, sDir);
                     this.carveMaze( n.x, n.y, depth + 1, maxDepth );
                 }
             }
         },
-        generate: function() {
+        generate: function(spec) {
+            let aMask = null;
+            let start = null;
+            if(spec) {
+                aMask = spec.mask;
+                start = spec.start;
+            }
             this.fill(0);
+            for( var key in aMask ) {
+                var mask = aMask[key];
+                this.mask(mask.c,mask.r);
+            }
             let maxDepth = this.xSize * this.ySize;
-            this.carveMaze(0,0,0,maxDepth);
+            let x = 0;
+            let y = 0;
+            if(start) {
+                x = start.c || 0;
+                y = start.y || 0;
+            }
+            this.carveMaze(x,y,0,maxDepth);
         },
         printBorder: function() {
             var row = "";
@@ -62,15 +87,11 @@ module.exports.create = function (spec) {
         },
         printBoard: function() {
             console.log("MAZE: %d, %d", _x, _y);
-            var perfect = true;
             this.printBorder();
             let dirMap = this.getDirMap();
             for(var y = 0; y < _y; y++) {
                 var row = "|";
                 for(var x = 0; x < _x; x++) {
-                    if( this.get(x,y)===0) {
-                        perfect = false;
-                    }
                     row += this.connects( x, y, "S" ) ? " " : "_";
                     if(this.connects( x, y, "E" )) {
                         // row += ( ( ( grid[x][y] | grid[x+1][y] ) & S ) != 0) ? " " : "_"
@@ -80,9 +101,6 @@ module.exports.create = function (spec) {
                     }
                 }
                 console.log( row );
-            }
-            if(!perfect) {
-                console.log("WARNING: Not a perfect maze");
             }
         }
     });

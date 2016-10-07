@@ -102,4 +102,37 @@ describe('module smoke test', function() {
         mazeGenerator.printBoard();
         done();
     });
+
+    it('generate start should start the maze in a new location', function(done) {
+        var mazeGenerator = _module.create({ x: 5, y: 6 });
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 3, r: 3 },
+            mask: [
+                { c: 0, r: 0 },
+                { c: 0, r: 1 },
+                { c: 1, r: 0 },
+                { c: 1, r: 1 },
+            ]
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate mask should mask parts of the maze', function(done) {
+        var mazeGenerator = _module.create({ x: 5, y: 6 });
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 3, r: 3 },
+            mask: [
+                { c: 0, r: 1 },
+                { c: 1, r: 0 },
+                { c: 1, r: 1 },
+            ]
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+    });
 });
