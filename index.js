@@ -47,8 +47,7 @@ module.exports.create = function (spec) {
                 }
  
                 if(
-                    this.isCell(n.x, n.y) 
-                    && !this.hasConnections(n.x, n.y)
+                    this.isCell(n.x, n.y) && !this.hasConnections(n.x, n.y)
                 ) {
                     // Connect cell to neighbor
                     this.connectUndirected( x, y, sDir);
