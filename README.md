@@ -156,4 +156,8 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 * added __start__ and __mask__ options to __generate__ method
 
+#### Version 0.1.5
+
+* updated package to use @mitchallen/connection-grid version 0.1.5
+
 * * *
