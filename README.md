@@ -134,6 +134,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
+#### Version 0.1.7
+
+* updated package to use @mitchallen/connection-grid version 0.1.8
+
 #### Version 0.1.6
 
 * updated package to use @mitchallen/connection-grid version 0.1.7
