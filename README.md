@@ -34,9 +34,9 @@ Factory method that returns a maze generator object. This overrides the __create
 
 It takes one spec parameter that must be an object with x and y values specifying the size of the maze.
 
-The x and y size values can not be less than one (1).
+If x and y size values are less than one (0) they will be normalized to 0.
 
-The method will return null if create fails, such as with bad parameters. You can call create multiple times to create multiple mazes.
+You can call create multiple times to create multiple mazes.
 
     var mazeFactory = require("@mitchallen/maze-generator");
 
@@ -134,13 +134,23 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
-#### Version 0.1.0 
+#### Version 0.1.6
 
-* initial release
+* updated package to use @mitchallen/connection-grid version 0.1.7
+* can now generate empty mazes
+* negative x and y sizes will be normalized to zero
 
-#### Version 0.1.1 
+#### Version 0.1.5
 
-* fixed error in documentation
+* updated package to use @mitchallen/connection-grid version 0.1.5
+
+#### Version 0.1.4
+
+* added __start__ and __mask__ options to __generate__ method
+
+#### Version 0.1.3
+
+* updated documentation
 
 #### Version 0.1.2
 
@@ -148,16 +158,22 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * generate method now fills grid with zeros before generating maze
 * max depth is now calculated automatically and no longer needs to be passed to generate method
 
-#### Version 0.1.3
+#### Version 0.1.1 
 
-* updated documentation
+* fixed error in documentation
 
-#### Version 0.1.4
+#### Version 0.1.0 
 
-* added __start__ and __mask__ options to __generate__ method
+* initial release
 
-#### Version 0.1.5
 
-* updated package to use @mitchallen/connection-grid version 0.1.5
+
+
+
+
+
+
+
+
 
 * * *
