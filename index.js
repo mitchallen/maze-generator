@@ -87,7 +87,7 @@ module.exports.create = function (spec) {
         printBoard: function() {
             console.log("MAZE: %d, %d", _x, _y);
             this.printBorder();
-            let dirMap = this.getDirMap();
+            let dirMap = this.dirMap;
             for(var y = 0; y < _y; y++) {
                 var row = "|";
                 for(var x = 0; x < _x; x++) {
