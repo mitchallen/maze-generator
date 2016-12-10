@@ -41,15 +41,62 @@ describe('module smoke test', function() {
         done();
     });
 
-    it('create method with no spec should return null', function(done) {
+    it('create method with no spec should return object', function(done) {
         var mazeGenerator = _module.create();
-        should.not.exist(mazeGenerator);
+        should.exist(mazeGenerator);
         done();
     });
 
     it('create method with valid x and y parameters should return object', function(done) {
         var mazeGenerator = _module.create({ x: 5, y: 5 });
         should.exist(mazeGenerator);
+        done();
+    });
+
+    it('generate 0 x 0 method should generate an empty maze', function(done) {
+        var mazeGenerator = _module.create({ x: 0, y: 0 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate -1 x -1 method should generate an empty maze', function(done) {
+        var mazeGenerator = _module.create({ x: -1, y: -1 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate -1 x -1 method should normalize x and y to 0', function(done) {
+        var mazeGenerator = _module.create({ x: -1, y: -1 });
+        mazeGenerator.xSize.should.eql(0);
+        mazeGenerator.ySize.should.eql(0);
+        done();
+    });
+
+    it('generate 1 x 1 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 1, y: 1 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate 1 x 2 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 1, y: 2 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate 2 x 1 method should generate a maze', function(done) {
+        var mazeGenerator = _module.create({ x: 2, y: 1 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
         done();
     });
 
