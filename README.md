@@ -65,6 +65,23 @@ You can call Hexagon multiple times to create multiple mazes.
     var maze2 = mazeFactory.Hexagon( { x: 7, y: 20 } );
 
     if(!maze1 || !maze2) ...
+    
+### mazeFactory = factory.Triangle(spec)
+
+Factory method that returns a __triangel__ maze generator object. 
+
+It takes one spec parameter that must be an object with x and y values specifying the size of the maze.
+
+If x and y size values are less than one (0) they will be normalized to 0.
+
+You can call Triangel multiple times to create multiple mazes.
+
+    var mazeFactory = require("@mitchallen/maze-generator");
+
+    var maze1 = mazeFactory.Triangle( { x: 5, y: 10 } );
+    var maze2 = mazeFactory.Triangle( { x: 7, y: 20 } );
+
+    if(!maze1 || !maze2) ...
 
 ### maze.generate(spec = null);
 
@@ -145,6 +162,21 @@ Example:
     / \_/ \   \_  \ / \_/
     \_   _  \_   _/  _  \
       \_/ \_/ \_/ \_/ \_/
+      
+
+    TRIANGLE MAZE: 10, 5
+      ____________________        
+     /        \          /        
+    /__  __    \        /         
+    \       \   \   \   \         
+     \ __    \   \   \   \        
+     /    \   \      /   /        
+    /      \   \ __ /   /         
+    \   \      /    \   \         
+     \   \ __ /      \   \        
+     /            \      /        
+    /__  __  __  __\ __ /         
+                      
 
 ## Testing
 
@@ -176,6 +208,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.11
+
+* Added __Triangle__ method
 
 #### Version 0.1.10
 
