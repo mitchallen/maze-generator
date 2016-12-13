@@ -22,15 +22,19 @@ You must use __npm__ __2.7.0__ or higher because of the scoped package name.
     let xSize = 5;
     let ySize = 6;
 
-    var maze = mazeFactory.create({ x: xSize, y: ySize });
+    var maze = mazeFactory.Square({ x: xSize, y: ySize });
 
 ## Methods
 
 For more methods see the parent class: __[@mitchallen/connection-grid](https://www.npmjs.com/package/@mitchallen/connection-grid)__.
 
-### mazeFactory = factory.create(spec)
+### gridFactory = factory.create(spec)
 
-Factory method that returns a maze generator object. This overrides the __create__ method in the parent class.
+The __create__ method is deprecated. Use __Square__ instead.
+
+### mazeFactory = factory.Square(spec)
+
+Factory method that returns a maze generator object. 
 
 It takes one spec parameter that must be an object with x and y values specifying the size of the maze.
 
@@ -40,8 +44,8 @@ You can call create multiple times to create multiple mazes.
 
     var mazeFactory = require("@mitchallen/maze-generator");
 
-    var maze1 = mazeFactory.create( { x: 5, y: 10 } );
-    var maze2 = mazeFactory.create( { x: 7, y: 20 } );
+    var maze1 = mazeFactory.Square( { x: 5, y: 10 } );
+    var maze2 = mazeFactory.Square( { x: 7, y: 20 } );
 
     if(!maze1 || !maze2) ...
 
@@ -133,6 +137,11 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.9
+
+* Restructured code base
+* Added __Square__ method to replace __create__ method (deprecated)
 
 #### Version 0.1.8
 
