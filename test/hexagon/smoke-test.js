@@ -1,6 +1,6 @@
 /**
     Module: @mitchallen/maze-generator
-      Test: square/smoke-test
+      Test: hexagon/smoke-test
     Author: Mitch Allen
 */
 
@@ -13,7 +13,7 @@ var request = require('supertest'),
     should = require('should'),
     modulePath = "../../index";
 
-describe('Square method', function() {
+describe('Hexagon smoke test', function() {
 
     var _module = null;
 
@@ -45,19 +45,19 @@ describe('Square method', function() {
     });
 
     it('with no spec should return object', function(done) {
-        var mazeGenerator = _module.Square();
+        var mazeGenerator = _module.Hexagon();
         should.exist(mazeGenerator);
         done();
     });
 
     it('with valid x and y parameters should return object', function(done) {
-        var mazeGenerator = _module.Square({ x: 5, y: 5 });
+        var mazeGenerator = _module.Hexagon({ x: 5, y: 5 });
         should.exist(mazeGenerator);
         done();
     });
 
     it('generate 0 x 0 method should generate an empty maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 0, y: 0 });
+        var mazeGenerator = _module.Hexagon({ x: 0, y: 0 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -65,7 +65,7 @@ describe('Square method', function() {
     });
 
     it('generate -1 x -1 method should generate an empty maze', function(done) {
-        var mazeGenerator = _module.Square({ x: -1, y: -1 });
+        var mazeGenerator = _module.Hexagon({ x: -1, y: -1 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -73,14 +73,14 @@ describe('Square method', function() {
     });
 
     it('generate -1 x -1 method should normalize x and y to 0', function(done) {
-        var mazeGenerator = _module.Square({ x: -1, y: -1 });
+        var mazeGenerator = _module.Hexagon({ x: -1, y: -1 });
         mazeGenerator.xSize.should.eql(0);
         mazeGenerator.ySize.should.eql(0);
         done();
     });
 
     it('generate 1 x 1 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 1, y: 1 });
+        var mazeGenerator = _module.Hexagon({ x: 1, y: 1 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -88,7 +88,7 @@ describe('Square method', function() {
     });
 
     it('generate 1 x 2 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 1, y: 2 });
+        var mazeGenerator = _module.Hexagon({ x: 1, y: 2 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -96,7 +96,7 @@ describe('Square method', function() {
     });
 
     it('generate 2 x 1 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 2, y: 1 });
+        var mazeGenerator = _module.Hexagon({ x: 2, y: 1 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -104,7 +104,7 @@ describe('Square method', function() {
     });
 
     it('generate 5 x 5 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 5, y: 5 });
+        var mazeGenerator = _module.Hexagon({ x: 5, y: 5 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -112,7 +112,7 @@ describe('Square method', function() {
     });
 
     it('generate 10 x 5 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 10, y: 5 });
+        var mazeGenerator = _module.Hexagon({ x: 10, y: 5 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -120,7 +120,7 @@ describe('Square method', function() {
     });
 
     it('generate 10 x 10 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 10, y: 10 });
+        var mazeGenerator = _module.Hexagon({ x: 10, y: 10 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -128,7 +128,7 @@ describe('Square method', function() {
     });
 
     it('generate 20 x 15 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 20, y: 15 });
+        var mazeGenerator = _module.Hexagon({ x: 20, y: 15 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -136,7 +136,7 @@ describe('Square method', function() {
     });
 
     it('generate 20 x 20 method should generate a maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 20, y: 20 });
+        var mazeGenerator = _module.Hexagon({ x: 20, y: 20 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -144,7 +144,7 @@ describe('Square method', function() {
     });
 
     it('generate called twice should generate two valid and distinct mazes', function(done) {
-        var mazeGenerator = _module.Square({ x: 10, y: 5 });
+        var mazeGenerator = _module.Hexagon({ x: 10, y: 5 });
         should.exist(mazeGenerator);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
@@ -154,7 +154,7 @@ describe('Square method', function() {
     });
 
     it('generate start should start the maze in a new location', function(done) {
-        var mazeGenerator = _module.Square({ x: 5, y: 6 });
+        var mazeGenerator = _module.Hexagon({ x: 5, y: 6 });
         should.exist(mazeGenerator);
         let spec = {
             start: { c: 3, r: 3 },
@@ -171,7 +171,7 @@ describe('Square method', function() {
     });
 
     it('generate mask should mask parts of the maze', function(done) {
-        var mazeGenerator = _module.Square({ x: 5, y: 6 });
+        var mazeGenerator = _module.Hexagon({ x: 5, y: 6 });
         should.exist(mazeGenerator);
         let spec = {
             start: { c: 3, r: 3 },
