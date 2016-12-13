@@ -134,6 +134,11 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
+#### Version 0.1.8
+
+* updated package to use @mitchallen/connection-grid version 0.1.14
+* now use connection-grid.Square instead of .create (deprecated)
+
 #### Version 0.1.7
 
 * updated package to use @mitchallen/connection-grid version 0.1.8
