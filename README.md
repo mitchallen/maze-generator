@@ -34,18 +34,35 @@ The __create__ method is deprecated. Use __Square__ instead.
 
 ### mazeFactory = factory.Square(spec)
 
-Factory method that returns a maze generator object. 
+Factory method that returns a __square__ maze generator object. 
 
 It takes one spec parameter that must be an object with x and y values specifying the size of the maze.
 
 If x and y size values are less than one (0) they will be normalized to 0.
 
-You can call create multiple times to create multiple mazes.
+You can call Square multiple times to create multiple mazes.
 
     var mazeFactory = require("@mitchallen/maze-generator");
 
     var maze1 = mazeFactory.Square( { x: 5, y: 10 } );
     var maze2 = mazeFactory.Square( { x: 7, y: 20 } );
+
+    if(!maze1 || !maze2) ...
+    
+### mazeFactory = factory.Hexagon(spec)
+
+Factory method that returns a __hexagon__ maze generator object. 
+
+It takes one spec parameter that must be an object with x and y values specifying the size of the maze.
+
+If x and y size values are less than one (0) they will be normalized to 0.
+
+You can call Hexagon multiple times to create multiple mazes.
+
+    var mazeFactory = require("@mitchallen/maze-generator");
+
+    var maze1 = mazeFactory.Hexagon( { x: 5, y: 10 } );
+    var maze2 = mazeFactory.Hexagon( { x: 7, y: 20 } );
 
     if(!maze1 || !maze2) ...
 
@@ -91,7 +108,7 @@ Logs to the console the generated maze. You should examine the source for this m
 
 Example:
 
-    MAZE: 20, 20
+    SQUARE MAZE: 20, 20
      _______________________________________
     |_  |    ___  |___   _   _|  ___   _  | |
     | | | |___  | |   |_  |_____| |  _|  _| |
@@ -113,12 +130,34 @@ Example:
     |  _|_|  ___| | | |___| |   |_|   | |_  |
     | |  ___| |   | | |  _| | |_  | | |___| |
     |___|_______|_____|_______|_____|_______|
+    
+
+    HEXAGON MAZE: 10, 5
+     _   _   _   _   _   
+    / \_/ \_/ \_/ \_/ \_ 
+    \ / \_       _  \_  \
+    /  _  \_/ \_/  _/ \ /
+    \_/ \_  \ /  _/  _  \
+    /  _  \ / \ /  _/ \ /
+    \_/ \ /  _/ \ /  _/ \
+    /  _  \_/ \ / \ / \ /
+    \ /  _/  _/ \ /  _  \
+    / \_/ \   \_  \ / \_/
+    \_   _  \_   _/  _  \
+      \_/ \_/ \_/ \_/ \_/
 
 ## Testing
 
 To test, go to the root folder and type (sans __$__):
 
     $ npm test
+    
+Run suites using nodemon:
+
+
+
+    $ npm run test-square
+    $ npm run test-hexagon
    
 * * *
  
@@ -137,6 +176,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.10
+
+* Added __Hexagon__ method
 
 #### Version 0.1.9
 
