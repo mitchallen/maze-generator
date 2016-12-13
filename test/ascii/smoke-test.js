@@ -74,4 +74,22 @@ describe('Ascii module', function() {
         done();
     });
 
+    it('should put rows in rows', function(done) {
+        var ascii = _module.Canvas({ columns: 10, rows: 5, fill: "." });
+        // ascii.fill('@');
+        ascii.set(0,0,'H');
+        ascii.set(1,0,'E');
+        ascii.set(2,0,'L');
+        ascii.set(3,0,'L');
+        ascii.set(4,0,'O');
+        ascii.set(0,1,'W');
+        ascii.set(1,1,'O');
+        ascii.set(2,1,'R');
+        ascii.set(3,1,'L');
+        ascii.set(4,1,'D');
+        ascii.print();
+        ascii.log();
+        done();
+    });
+
 });
