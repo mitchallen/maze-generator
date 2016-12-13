@@ -140,13 +140,14 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 #### Version 0.1.9
 
-* Restructured code base
-* Added __Square__ method to replace __create__ method (deprecated)
+* Corrected version history
 
 #### Version 0.1.8
 
 * updated package to use @mitchallen/connection-grid version 0.1.14
 * now use connection-grid.Square instead of .create (deprecated)
+* Restructured code base
+* Added __Square__ method to replace __create__ method (deprecated)
 
 #### Version 0.1.7
 
