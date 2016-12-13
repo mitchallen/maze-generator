@@ -185,4 +185,21 @@ describe('Hexagon smoke test', function() {
         mazeGenerator.printBoard();
         done();
     });
+
+    it('generate mask should mask center parts of the maze', function(done) {
+        var mazeGenerator = _module.Hexagon({ x: 5, y: 6 });
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 0, r: 0 },
+            mask: [
+                { c: 1, r: 2 },
+                { c: 2, r: 2 },
+                { c: 2, r: 3 },
+                { c: 3, r: 2 },
+            ]
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+    });
 });
