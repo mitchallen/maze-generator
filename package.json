@@ -31,6 +31,6 @@
     "supertest": "^2.0.0"
   },
   "dependencies": {
-    "@mitchallen/connection-grid": "^0.1.17"
+    "@mitchallen/connection-grid": "^0.1.18"
   }
 }

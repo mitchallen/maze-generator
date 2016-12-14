@@ -199,10 +199,10 @@ Example:
 
     CIRCLE MAZE: 5
     _________________________________________________
-    | _ ____| _____ | _ __| ___ __| _ _______ | ___ |
-    __|_______| ____| |_____| |_____| |_______|__ |__
-    ____|   ____|   |________   |   |____   |   _____
-    |       |_______________________|_______________|
+    | _ _ | _ |____ __| _ ___ | _____ __| ___ | ___ |
+    __| |_| |____ |__ __|__ |_|__ | | | __| |___| |__
+    |_______|   ____|___|___________|_______________|
+    _       |________________________________________
     |_______________________________________________|
 
 
@@ -214,10 +214,10 @@ To test, go to the root folder and type (sans __$__):
     
 Run suites using nodemon:
 
-
-
     $ npm run test-square
     $ npm run test-hexagon
+    $ npm run test-triangle
+    $ npm run test-circle
    
 * * *
  
@@ -236,6 +236,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.14
+
+* updated package to use @mitchallen/connection-grid version 0.1.18
 
 #### Version 0.1.13
 
