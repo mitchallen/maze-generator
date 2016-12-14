@@ -11,7 +11,8 @@
 var connectionGridFactory = require("@mitchallen/connection-grid"),
     squareMaze = require('./lib/square'),
     hexagonMaze = require('./lib/hexagon'),
-    triangleMaze = require('./lib/triangle');
+    triangleMaze = require('./lib/triangle'),
+    circleMaze = require('./lib/circle');
 
 var createMaze = (spec) => {
     console.warn("@mitchallen/maze-generator: .create is deprecated. Use .Square instead.");
@@ -23,4 +24,5 @@ module.exports = {
     Square: squareMaze,
     Hexagon: hexagonMaze,
     Triangle: triangleMaze,
+    Circle: circleMaze
 };
