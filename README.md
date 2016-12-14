@@ -237,9 +237,14 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
+#### Version 0.1.13
+
+* updated package to use @mitchallen/connection-grid version 0.1.17
+* Moved __connectsAny__ from __Circle__ to @mitchallen/connection-grid
+
 #### Version 0.1.12
 
-* Added _Circle__ method
+* Added __Circle__ method
 * updated package to use @mitchallen/connection-grid version 0.1.16
 
 #### Version 0.1.11
