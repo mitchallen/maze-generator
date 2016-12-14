@@ -87,7 +87,7 @@ You can call Triangle multiple times to create multiple mazes.
 
 Factory method that returns a __circle__ maze generator object. 
 
-It takes one spec parameter that must be an object a __rings__ value specifying the size of the maze.
+It takes one spec parameter that must be an object with a __rings__ value specifying the size of the maze.
 
 You can call Circle multiple times to create multiple mazes.
 
