@@ -47,7 +47,8 @@ You can call Square multiple times to create multiple mazes.
     var maze1 = mazeFactory.Square( { x: 5, y: 10 } );
     var maze2 = mazeFactory.Square( { x: 7, y: 20 } );
 
-    if(!maze1 || !maze2) ...
+    maze1.generate();
+    maze2.generate();
     
 ### mazeFactory = factory.Hexagon(spec)
 
@@ -64,7 +65,8 @@ You can call Hexagon multiple times to create multiple mazes.
     var maze1 = mazeFactory.Hexagon( { x: 5, y: 10 } );
     var maze2 = mazeFactory.Hexagon( { x: 7, y: 20 } );
 
-    if(!maze1 || !maze2) ...
+    maze1.generate();
+    maze2.generate();
     
 ### mazeFactory = factory.Triangle(spec)
 
@@ -81,7 +83,8 @@ You can call Triangle multiple times to create multiple mazes.
     var maze1 = mazeFactory.Triangle( { x: 5, y: 10 } );
     var maze2 = mazeFactory.Triangle( { x: 7, y: 20 } );
 
-    if(!maze1 || !maze2) ...
+    maze1.generate();
+    maze2.generate();
 
 ### mazeFactory = factory.Circle(spec)
 
@@ -96,7 +99,8 @@ You can call Circle multiple times to create multiple mazes.
     var maze1 = mazeFactory.Circle( { rings: 5 } );
     var maze2 = mazeFactory.Circle( { rings: 6 } );
 
-    if(!maze1 || !maze2) ...
+    maze1.generate();
+    maze2.generate();
 
 ### maze.generate(spec = null);
 
