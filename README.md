@@ -68,18 +68,33 @@ You can call Hexagon multiple times to create multiple mazes.
     
 ### mazeFactory = factory.Triangle(spec)
 
-Factory method that returns a __triangel__ maze generator object. 
+Factory method that returns a __triangle__ maze generator object. 
 
 It takes one spec parameter that must be an object with x and y values specifying the size of the maze.
 
 If x and y size values are less than one (0) they will be normalized to 0.
 
-You can call Triangel multiple times to create multiple mazes.
+You can call Triangle multiple times to create multiple mazes.
 
     var mazeFactory = require("@mitchallen/maze-generator");
 
     var maze1 = mazeFactory.Triangle( { x: 5, y: 10 } );
     var maze2 = mazeFactory.Triangle( { x: 7, y: 20 } );
+
+    if(!maze1 || !maze2) ...
+
+### mazeFactory = factory.Circle(spec)
+
+Factory method that returns a __circle__ maze generator object. 
+
+It takes one spec parameter that must be an object a __rings__ value specifying the size of the maze.
+
+You can call Circle multiple times to create multiple mazes.
+
+    var mazeFactory = require("@mitchallen/maze-generator");
+
+    var maze1 = mazeFactory.Circle( { rings: 5 } );
+    var maze2 = mazeFactory.Circle( { rings: 6 } );
 
     if(!maze1 || !maze2) ...
 
@@ -208,6 +223,11 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.12
+
+* Added _Circle__ method
+* updated package to use @mitchallen/connection-grid version 0.1.16
 
 #### Version 0.1.11
 

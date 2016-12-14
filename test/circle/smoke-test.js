@@ -142,16 +142,6 @@ describe('Circle smoke test', function() {
         done();
     });
 
-    it('generate called twice should generate two valid and distinct mazes', function(done) {
-        var mazeGenerator = _module.Circle({ rings: 5 });
-        should.exist(mazeGenerator);
-        mazeGenerator.generate();
-        mazeGenerator.printBoard();
-        mazeGenerator.generate();
-        mazeGenerator.printBoard();
-        done();
-    });
-
     it('generate start should start the maze in a new location', function(done) {
         var mazeGenerator = _module.Circle({ rings: 5 });
         should.exist(mazeGenerator);
@@ -201,6 +191,18 @@ describe('Circle smoke test', function() {
         mazeGenerator.printBoard();
         done();
     });
+
+    it('generate called twice should generate two valid and distinct mazes', function(done) {
+        var mazeGenerator = _module.Circle({ rings: 5 });
+        should.exist(mazeGenerator);
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        mazeGenerator.generate();
+        mazeGenerator.printBoard();
+        done();
+    });
+
+
 
     it('generate 7 method should generate a maze', function(done) {
         var mazeGenerator = _module.Circle({ rings: 7 });
