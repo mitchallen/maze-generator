@@ -211,6 +211,10 @@ Example:
 To test, go to the root folder and type (sans __$__):
 
     $ npm test
+
+Run all tests using nodemon:
+
+    $ npm run test-nodemon
     
 Run suites using nodemon:
 
@@ -236,6 +240,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.15
+
+* updated package to use @mitchallen/connection-grid version 0.1.19
 
 #### Version 0.1.14
 
