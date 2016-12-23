@@ -1,5 +1,5 @@
 /**
-    Module: @mitchallen/maze-generator/lib/triangel
+    Module: @mitchallen/maze-generator/../circle
     Author: Mitch Allen
 */
 
@@ -9,7 +9,7 @@
 "use strict";
 
 var connectionGridFactory = require("@mitchallen/connection-grid"),
-    baseGrid = require("../lib/base");
+    baseGrid = require("./base");
 
 module.exports = (spec) => {
     
@@ -39,7 +39,7 @@ module.exports = (spec) => {
             for( var i = 0; i < lim; i++ ) {
                 row += "_";
             }
-            console.log( row )
+            console.log( row );
         },
 
         printBorder: function() {
@@ -84,7 +84,7 @@ module.exports = (spec) => {
                 }
 
                 console.log(row);
-            };
+            }
         }
     });
 };

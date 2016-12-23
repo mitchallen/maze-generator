@@ -1,5 +1,5 @@
 /**
-    Module: @mitchallen/maze-generator/lib/ascii-canvas
+    Module: @mitchallen/maze-generator/../ascii-canvas
     Author: Mitch Allen
 */
 

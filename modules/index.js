@@ -9,10 +9,10 @@
 "use strict";
 
 var connectionGridFactory = require("@mitchallen/connection-grid"),
-    squareMaze = require('./lib/square'),
-    hexagonMaze = require('./lib/hexagon'),
-    triangleMaze = require('./lib/triangle'),
-    circleMaze = require('./lib/circle');
+    squareMaze = require('./square'),
+    hexagonMaze = require('./hexagon'),
+    triangleMaze = require('./triangle'),
+    circleMaze = require('./circle');
 
 var createMaze = (spec) => {
     console.warn("@mitchallen/maze-generator: .create is deprecated. Use .Square instead.");

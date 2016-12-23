@@ -11,7 +11,8 @@
 
 var request = require('supertest'),
     should = require('should'),
-    modulePath = "../../lib/ascii-canvas";
+    // Not: modulePath = "../../dist/maze-generator";
+    modulePath = "../../modules/ascii-canvas";
 
 describe('Ascii module', function() {
 
