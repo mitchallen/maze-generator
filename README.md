@@ -296,6 +296,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
+#### Version 0.1.18
+
+* removed old file from dist folder
+
 #### Version 0.1.17
 
 * added browser client example
