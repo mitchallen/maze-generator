@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Maze Generator Example</title>
+    <meta name="description" content="Maze Generator Example">
+    <!-- either cdn should work -->
+    <!--
+    <script src="https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.16/dist/maze-generator.min.js"></script>
+    -->
+    <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.16/dist/maze-generator.min.js"></script>
+    <script>
+      var factory = window.MitchAllen.MazeGenerator;
+      console.log(factory);
+      var xSize = 10, ySize = 5;
+      var sm = factory.Square( { x: xSize, y: ySize } );
+      console.log(sm);
+      sm.generate();
+      sm.printBoard(); 
+    </script>
+  </head>
+  <body>
+    <h1>Maze Generator Example</h1>
+    <p>See JavaScript developer console for output.</p>
+  </body>
+</html>

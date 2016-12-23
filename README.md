@@ -23,6 +23,61 @@ You must use __npm__ __2.7.0__ or higher because of the scoped package name.
     let ySize = 6;
 
     var maze = mazeFactory.Square({ x: xSize, y: ySize });
+    
+## Browser Usage:
+
+You can reference a minimized client version inside an HTML script tag using one of these URL's:
+
+* https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.16/dist/maze-generator.min.js
+* https://unpkg.com/@mitchallen/maze-generator@0.1.16/dist/maze-generator.min.js
+
+Adjust for the version that you wish to use.
+
+The __rawgit.com__ URL will pull based on the version from GitHub.
+
+The __unpkg.com__ URL will pull based on the version in npmjs.com.
+
+See http://rawgit.com and https://unpkg.com for other ways to retrieve the file.
+
+The factory function can be retrieved from __window.MitchAllen.MazeGenerator__:
+
+    var factory = window.MitchAllen.MazeGenerator;
+    var xSize = 10, ySize = 5;
+    var sm = factory.Square( { x: xSize, y: ySize } );
+    sm.generate();
+    sm.printBoard();
+
+Example:
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Maze Generator Example</title>
+        <meta name="description" content="Maze Generator Example">
+        <!-- either cdn should work -->
+        <!--
+        <script src="https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.16/dist/maze-generator.min.js"></script>
+        -->
+        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.16/dist/maze-generator.min.js"></script>
+        <script>
+          var factory = window.MitchAllen.MazeGenerator;
+          console.log(factory);
+          var xSize = 10, ySize = 5;
+          var sm = factory.Square( { x: xSize, y: ySize } );
+          console.log(sm);
+          sm.generate();
+          sm.printBoard(); 
+        </script>
+      </head>
+      <body>
+        <h1>Maze Generator Example</h1>
+        <p>See JavaScript developer console for output.</p>
+      </body>
+    </html>
+
+
+* * *
 
 ## Methods
 
@@ -240,6 +295,11 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 * * *
 
 ## Version History
+
+#### Version 0.1.17
+
+* added browser client example
+* updated documentation
 
 #### Version 0.1.16
 
