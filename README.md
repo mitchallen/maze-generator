@@ -296,6 +296,11 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
+#### Version 0.1.19
+
+* replaced modules/base.js with @mitchallen/maze-generator-core
+* square now uses @mitchallen/connection-grid-square instead of @mitchallen/connection-grid
+
 #### Version 0.1.18
 
 * removed old file from dist folder

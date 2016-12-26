@@ -8,7 +8,7 @@
 
 "use strict";
 
-var connectionGridFactory = require("@mitchallen/connection-grid"),
+var connectionGridFactory = require("@mitchallen/connection-grid-square"),
     baseGrid = require("@mitchallen/maze-generator-core");
 
 module.exports = (spec) => {
@@ -23,7 +23,7 @@ module.exports = (spec) => {
         y: _y
     };
 
-    var _connectionGrid = connectionGridFactory.Square(_gridSpec);
+    var _connectionGrid = connectionGridFactory.create(_gridSpec);
     if(!_connectionGrid) {
         return null;
     }
