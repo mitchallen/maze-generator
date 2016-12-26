@@ -29,7 +29,7 @@ module.exports = (spec) => {
         return null;
     }
 
-    var obj = baseGrid( {
+    var obj = baseGrid.create( {
         grid: _connectionGrid,
     });
 

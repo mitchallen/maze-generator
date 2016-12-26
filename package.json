@@ -6,7 +6,7 @@
   "scripts": {
     "//": "To use: npm run test-nodemon (assumes global location of mocha)",
     "start": "node dist/maze-generator.js",
-    "test": "mocha --recursive --timeout 20000",
+    "test": "grunt && /usr/local/bin/mocha --recursive --timeout 20000",
     "test-nodemon": "nodemon /usr/local/bin/mocha --recursive --timeout 5000",
     "test-hexagon": "grunt && /usr/local/bin/mocha --recursive test/hexagon/ --timeout 5000",
     "test-square": "grunt && /usr/local/bin/mocha --recursive test/square/ --timeout 5000",

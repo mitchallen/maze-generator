@@ -296,6 +296,10 @@ Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Version History
 
+#### Version 0.1.20
+
+* Fixed issue integrating new core and grunt with npm test
+
 #### Version 0.1.19
 
 * replaced modules/base.js with @mitchallen/maze-generator-core
