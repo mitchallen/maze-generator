@@ -26,27 +26,6 @@ You must use __npm__ __2.7.0__ or higher because of the scoped package name.
     
 ## Browser Usage:
 
-You can reference a minimized client version inside an HTML script tag using one of these URL's:
-
-* https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.16/dist/maze-generator.min.js
-* https://unpkg.com/@mitchallen/maze-generator@0.1.16/dist/maze-generator.min.js
-
-Adjust for the version that you wish to use.
-
-The __rawgit.com__ URL will pull based on the version from GitHub.
-
-The __unpkg.com__ URL will pull based on the version in npmjs.com.
-
-See http://rawgit.com and https://unpkg.com for other ways to retrieve the file.
-
-The factory function can be retrieved from __window.MitchAllen.MazeGenerator__:
-
-    var factory = window.MitchAllen.MazeGenerator;
-    var xSize = 10, ySize = 5;
-    var sm = factory.Square( { x: xSize, y: ySize } );
-    sm.generate();
-    sm.printBoard();
-
 Example:
 
     <!DOCTYPE html>
@@ -57,9 +36,9 @@ Example:
         <meta name="description" content="Maze Generator Example">
         <!-- either cdn should work -->
         <!--
-        <script src="https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.19/dist/maze-generator.min.js"></script>
+        <script src="https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.20/dist/maze-generator.min.js"></script>
         -->
-        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.19/dist/maze-generator.min.js"></script>
+        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.20/dist/maze-generator.min.js"></script>
         <script>
           var factory = window.MitchAllen.MazeGenerator;
           console.log(factory);
