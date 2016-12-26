@@ -8,8 +8,7 @@
 
 "use strict";
 
-var connectionGridFactory = require("@mitchallen/connection-grid"),
-    squareMaze = require('./square'),
+var squareMaze = require('./square'),
     hexagonMaze = require('./hexagon'),
     triangleMaze = require('./triangle'),
     circleMaze = require('./circle');

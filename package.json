@@ -37,6 +37,7 @@
     "supertest": "^2.0.0"
   },
   "dependencies": {
-    "@mitchallen/connection-grid": "^0.1.25"
+    "@mitchallen/connection-grid": "^0.1.25",
+    "@mitchallen/maze-generator-core": "^0.1.1"
   }
 }
