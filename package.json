@@ -39,6 +39,7 @@
   "dependencies": {
     "@mitchallen/connection-grid": "^0.1.25",
     "@mitchallen/connection-grid-square": "^0.1.0",
-    "@mitchallen/maze-generator-core": "^0.1.1"
+    "@mitchallen/maze-generator-core": "^0.1.1",
+    "@mitchallen/maze-generator-square": "^0.1.1"
   }
 }
