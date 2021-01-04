@@ -52,7 +52,8 @@ module.exports = (spec) => {
                 var py = y * 2;
                 for(var x = 0; x < _x; x++) {
                     var cell = this.get(x,y);
-
+                    var isGreen = this.isGreen(x,y);
+           
                     if( cell !== 0 ) {
                         var px = x * 2;
                         var shifted = x % 2 !== 0;
@@ -69,6 +70,10 @@ module.exports = (spec) => {
                             se = "SE"; 
                         }
               
+                        if( isGreen ) {
+                          canvas.set(px + 1,ry + 1,"\u233E");
+                        }
+                        
                         if(!this.connects( x, y, "N" )) {
                             canvas.set(px + 1,ry,"_");
                         }

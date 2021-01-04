@@ -217,4 +217,27 @@ describe('Hexagon smoke test', function() {
       // console.log('\ntarget: ', d, '\n');
       done();
     });
+
+    it('solve for hexagon maze', function (done) {
+      let size = { x: 5, y: 6 };
+      var mazeGenerator = _module.Hexagon(size);
+      should.exist(mazeGenerator);
+      let spec = {
+          start: { c: 0, r: 0 },
+      };
+      mazeGenerator.generate(spec);
+      let d = mazeGenerator.getMaxDistance(0, 0);
+      console.log(d);
+      // TODO - add target handler
+      mazeGenerator.printBoard({ target: d });
+      // console.log('\ntarget: ', d, '\n');
+      let { x: dx, y: dy } = d;
+      let points = [
+        { x: 0, y: 0 },
+        { x: dx, y: dy },
+      ];
+      mazeGenerator.solve(points);
+      mazeGenerator.printBoard({ target: d });
+      done();
+    });
 });

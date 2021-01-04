@@ -21,7 +21,7 @@
     "url": "https://github.com/mitchallen/maze-generator.git"
   },
   "author": "Mitch Allen <npm@mitchallen.com> (http://mitchallen.com)",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",
     "babelify": "^7.3.0",
@@ -40,9 +40,9 @@
     "yargs-parser": "^20.2.4"
   },
   "dependencies": {
-    "@mitchallen/connection-grid": "^0.1.30",
-    "@mitchallen/connection-grid-square": "^0.1.13",
-    "@mitchallen/maze-generator-core": "^0.1.10",
-    "@mitchallen/maze-generator-square": "^0.1.18"
+    "@mitchallen/connection-grid": "^0.1.32",
+    "@mitchallen/connection-grid-square": "^0.1.16",
+    "@mitchallen/maze-generator-core": "^0.1.11",
+    "@mitchallen/maze-generator-square": "^0.1.22"
   }
 }

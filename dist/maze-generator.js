@@ -112,6 +112,8 @@ module.exports.create = function (spec) {
   // bit masks
   var VISITED = 0x01;
   var MASKED = 0x02;
+  var RED = 0x04;
+  var GREEN = 0x08;
 
   Object.defineProperties(_grid, {
     "dirMap": {
@@ -202,6 +204,58 @@ module.exports.create = function (spec) {
       var shuffler = shuffleFactory.create({ array: this.getNeighborDirs(x, y) });
       return shuffler.shuffle();
     },
+
+    /** Sets a flag in a cell at x,y
+        * @param {number} x The x coordinate
+        * @param {number} y The y coordinate
+        * @function
+        * @instance
+        * @returns {boolean}
+        * @memberof module:connection-grid-core
+        * @example <caption>usage</caption>
+        * core.setFlag(1,2,VISITED);
+       */
+    setFlag: function setFlag(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.set(x, y, this.get(x, y) | flag);
+    },
+
+    /** Clears a flag from cell
+       * @param {number} x The x coordinate
+       * @param {number} y The y coordinate
+       * @function
+       * @instance
+       * @returns {boolean}
+       * @memberof module:connection-grid-core
+       * @example <caption>usage</caption>
+       * core.clearFlag(1,2,flag);
+      */
+    clearFlag: function clearFlag(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.set(x, y, this.get(x, y) & ~flag);
+    },
+
+    /** Returns true if a cell at x,y exists and flag has been set.
+    * @param {number} x The x coordinate
+    * @param {number} y The y coordinate
+    * @function
+    * @instance
+    * @returns {boolean}
+    * @memberof module:connection-grid-core
+    * @example <caption>usage</caption>
+    * if(core.isFlagSet(x,y,VISITED)) ...
+    */
+    isFlagSet: function isFlagSet(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return (this.get(x, y) & flag) !== 0;
+    },
+
     /** Marks a cell at x,y as visited.
       * @param {number} x The x coordinate
       * @param {number} y The y coordinate
@@ -213,7 +267,8 @@ module.exports.create = function (spec) {
       * core.markVisited(1,2);
      */
     markVisited: function markVisited(x, y) {
-      return this.set(x, y, this.get(x, y) | VISITED);
+      // return this.set(x, y, this.get(x, y) | VISITED);
+      return this.setFlag(x, y, VISITED);
     },
     /** Clears visit flag from cell
       * @param {number} x The x coordinate
@@ -226,7 +281,8 @@ module.exports.create = function (spec) {
       * core.clearVisited(1,2);
      */
     clearVisited: function clearVisited(x, y) {
-      return this.set(x, y, this.get(x, y) & ~VISITED);
+      // return this.set(x, y, this.get(x, y) & ~VISITED);
+      return this.clearFlag(x, y, VISITED);
     },
     /** Clear all visited flag from grid
       * @function
@@ -258,7 +314,8 @@ module.exports.create = function (spec) {
       if (!this.isCell(x, y)) {
         return false;
       }
-      return (this.get(x, y) & VISITED) !== 0;
+      // return ((this.get(x, y) & VISITED) !== 0);
+      return this.isFlagSet(x, y, VISITED);
     },
     /** Marks a cell at x,y as masked.
       * Useful for maze generators to mark cells to skip
@@ -272,7 +329,8 @@ module.exports.create = function (spec) {
       * core.mask(1,2)
      */
     mask: function mask(x, y) {
-      return this.set(x, y, this.get(x, y) | MASKED);
+      // return this.set(x, y, this.get(x, y) | MASKED);
+      return this.setFlag(x, y, MASKED);
     },
     /** Clear the mask flag from cell at x,y.
       * Useful for maze generators to mark and clear cells to skip
@@ -286,7 +344,8 @@ module.exports.create = function (spec) {
       * core.clearMask(1,2)
      */
     clearMask: function clearMask(x, y) {
-      return this.set(x, y, this.get(x, y) & ~MASKED);
+      // return this.set(x, y, this.get(x, y) & ~MASKED);
+      return this.clearFlag(x, y, MASKED);
     },
     /** Returns true if a cell at x,y has been marked using [mask]{@link module:connection-grid-core#mask}.
       * @param {number} x The x coordinate
@@ -302,8 +361,96 @@ module.exports.create = function (spec) {
       if (!this.isCell(x, y)) {
         return false;
       }
-      return (this.get(x, y) & MASKED) !== 0;
+      // return ((this.get(x, y) & MASKED) !== 0);
+      return this.isFlagSet(x, y, MASKED);
     },
+
+    /** Marks a cell at x,y as red.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.markRed(1,2)
+     */
+    markRed: function markRed(x, y) {
+      return this.setFlag(x, y, RED);
+    },
+    /** Clear the red flag from cell at x,y.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.clearRed(1,2)
+     */
+    clearRed: function clearRed(x, y) {
+      return this.clearFlag(x, y, RED);
+    },
+    /** Returns true if a cell at x,y has been set red using [markRed]{@link module:connection-grid-core#markRed}.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * if(core.isRed(1,2)) ...
+     */
+    isRed: function isRed(x, y) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.isFlagSet(x, y, RED);
+    },
+
+    /** Marks a cell at x,y as green.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.markGreen(1,2)
+     */
+    markGreen: function markGreen(x, y) {
+      return this.setFlag(x, y, GREEN);
+    },
+    /** Clear the green flag from cell at x,y.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.clearGreen(1,2)
+     */
+    clearGreen: function clearGreen(x, y) {
+      return this.clearFlag(x, y, GREEN);
+    },
+    /** Returns true if a cell at x,y has been set green using [markGreen]{@link module:connection-grid-core#markGreen}.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * if(core.isGreen(1,2)) ...
+     */
+    isGreen: function isGreen(x, y) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.isFlagSet(x, y, GREEN);
+    },
+
     /** Returns true if a cell at x,y has connections.
       * @param {number} x The x coordinate
       * @param {number} y The y coordinate
@@ -319,22 +466,44 @@ module.exports.create = function (spec) {
       if (cell === null) {
         return false;
       }
-      cell = cell & ~VISITED; // discount visited flag
+      // Discount non-dir connection flags
+      cell = cell & ~(VISITED | MASKED | RED | GREEN);
       if (cell === 0) {
         return false;
       }
       var list = this.getNeighborDirs(x, y);
-      for (var key in list) {
-        var sDir = list[key];
-        if (!this.isDir(sDir)) {
-          console.error("hasConnections unknown direction: ", sDir);
-          return false;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var sDir = _step.value;
+
+          if (!this.isDir(sDir)) {
+            console.error("hasConnections unknown direction: ", sDir);
+            return false;
+          }
+          var iDir = _DIR_MAP[sDir];
+          if ((cell & iDir) !== 0) {
+            return true;
+          }
         }
-        var iDir = _DIR_MAP[sDir];
-        if ((cell & iDir) !== 0) {
-          return true;
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
         }
       }
+
       return false;
     },
 
@@ -355,7 +524,8 @@ module.exports.create = function (spec) {
       if (!this.isDir(dir)) {
         return false;
       }
-      return this.set(x, y, this.get(x, y) | _DIR_MAP[dir]);
+      // return this.set(x, y, this.get(x, y) | _DIR_MAP[dir]);
+      return this.setFlag(x, y, _DIR_MAP[dir]);
     },
 
     /** Removes a connection for a cell at x,y in a particular direction.
@@ -374,7 +544,8 @@ module.exports.create = function (spec) {
       if (!this.isDir(dir)) {
         return false;
       }
-      return this.set(x, y, this.get(x, y) & ~_DIR_MAP[dir]);
+      // return this.set(x, y, this.get(x, y) & ~_DIR_MAP[dir]);
+      return this.clearFlag(x, y, _DIR_MAP[dir]);
     },
 
     /** Maps a connection for a cell at x,y in a particular direction.
@@ -561,13 +732,13 @@ module.exports.create = function (spec) {
       if (!this.hasConnections(x, y)) return;
       var cell = this.get(x, y);
       var list = this.getNeighborDirs(x, y);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var sDir = _step.value;
+        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var sDir = _step2.value;
 
           // console.log(`SCANNING: ${sDir}`);
           if (!this.isDir(sDir)) {
@@ -583,16 +754,16 @@ module.exports.create = function (spec) {
           }
         }
       } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -613,13 +784,13 @@ module.exports.create = function (spec) {
       var cell = this.get(x, y);
       var list = this.getNeighborDirs(x, y);
       var connections = 0;
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var sDir = _step2.value;
+        for (var _iterator3 = list[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var sDir = _step3.value;
 
           // console.log(`DEBUG: connectionCount - scanning: ${sDir}`)
           if (!this.isDir(sDir)) {
@@ -632,16 +803,16 @@ module.exports.create = function (spec) {
           }
         }
       } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
           }
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -678,13 +849,13 @@ module.exports.create = function (spec) {
         return false;
       }
       var list = this.getNeighborDirs(x, y);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator3 = list[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var sDir = _step3.value;
+        for (var _iterator4 = list[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var sDir = _step4.value;
 
           if (!this.isDir(sDir)) {
             console.error(".reset unknown direction: ", sDir);
@@ -693,22 +864,24 @@ module.exports.create = function (spec) {
           this.disconnectUndirected(x, y, sDir);
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
 
       this.clearMask(x, y);
       this.clearVisited(x, y);
+      this.clearRed(x, y);
+      this.clearGreen(x, y);
       return true;
     }
   });
@@ -832,6 +1005,8 @@ module.exports.create = function (spec) {
   // bit masks
   var VISITED = 0x01;
   var MASKED = 0x02;
+  var RED = 0x04;
+  var GREEN = 0x08;
 
   Object.defineProperties(_grid, {
     "dirMap": {
@@ -922,6 +1097,58 @@ module.exports.create = function (spec) {
       var shuffler = shuffleFactory.create({ array: this.getNeighborDirs(x, y) });
       return shuffler.shuffle();
     },
+
+    /** Sets a flag in a cell at x,y
+        * @param {number} x The x coordinate
+        * @param {number} y The y coordinate
+        * @function
+        * @instance
+        * @returns {boolean}
+        * @memberof module:connection-grid-core
+        * @example <caption>usage</caption>
+        * core.setFlag(1,2,VISITED);
+       */
+    setFlag: function setFlag(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.set(x, y, this.get(x, y) | flag);
+    },
+
+    /** Clears a flag from cell
+       * @param {number} x The x coordinate
+       * @param {number} y The y coordinate
+       * @function
+       * @instance
+       * @returns {boolean}
+       * @memberof module:connection-grid-core
+       * @example <caption>usage</caption>
+       * core.clearFlag(1,2,flag);
+      */
+    clearFlag: function clearFlag(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.set(x, y, this.get(x, y) & ~flag);
+    },
+
+    /** Returns true if a cell at x,y exists and flag has been set.
+    * @param {number} x The x coordinate
+    * @param {number} y The y coordinate
+    * @function
+    * @instance
+    * @returns {boolean}
+    * @memberof module:connection-grid-core
+    * @example <caption>usage</caption>
+    * if(core.isFlagSet(x,y,VISITED)) ...
+    */
+    isFlagSet: function isFlagSet(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return (this.get(x, y) & flag) !== 0;
+    },
+
     /** Marks a cell at x,y as visited.
       * @param {number} x The x coordinate
       * @param {number} y The y coordinate
@@ -933,7 +1160,8 @@ module.exports.create = function (spec) {
       * core.markVisited(1,2);
      */
     markVisited: function markVisited(x, y) {
-      return this.set(x, y, this.get(x, y) | VISITED);
+      // return this.set(x, y, this.get(x, y) | VISITED);
+      return this.setFlag(x, y, VISITED);
     },
     /** Clears visit flag from cell
       * @param {number} x The x coordinate
@@ -946,7 +1174,8 @@ module.exports.create = function (spec) {
       * core.clearVisited(1,2);
      */
     clearVisited: function clearVisited(x, y) {
-      return this.set(x, y, this.get(x, y) & ~VISITED);
+      // return this.set(x, y, this.get(x, y) & ~VISITED);
+      return this.clearFlag(x, y, VISITED);
     },
     /** Clear all visited flag from grid
       * @function
@@ -978,7 +1207,8 @@ module.exports.create = function (spec) {
       if (!this.isCell(x, y)) {
         return false;
       }
-      return (this.get(x, y) & VISITED) !== 0;
+      // return ((this.get(x, y) & VISITED) !== 0);
+      return this.isFlagSet(x, y, VISITED);
     },
     /** Marks a cell at x,y as masked.
       * Useful for maze generators to mark cells to skip
@@ -992,7 +1222,8 @@ module.exports.create = function (spec) {
       * core.mask(1,2)
      */
     mask: function mask(x, y) {
-      return this.set(x, y, this.get(x, y) | MASKED);
+      // return this.set(x, y, this.get(x, y) | MASKED);
+      return this.setFlag(x, y, MASKED);
     },
     /** Clear the mask flag from cell at x,y.
       * Useful for maze generators to mark and clear cells to skip
@@ -1006,7 +1237,8 @@ module.exports.create = function (spec) {
       * core.clearMask(1,2)
      */
     clearMask: function clearMask(x, y) {
-      return this.set(x, y, this.get(x, y) & ~MASKED);
+      // return this.set(x, y, this.get(x, y) & ~MASKED);
+      return this.clearFlag(x, y, MASKED);
     },
     /** Returns true if a cell at x,y has been marked using [mask]{@link module:connection-grid-core#mask}.
       * @param {number} x The x coordinate
@@ -1022,8 +1254,96 @@ module.exports.create = function (spec) {
       if (!this.isCell(x, y)) {
         return false;
       }
-      return (this.get(x, y) & MASKED) !== 0;
+      // return ((this.get(x, y) & MASKED) !== 0);
+      return this.isFlagSet(x, y, MASKED);
     },
+
+    /** Marks a cell at x,y as red.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.markRed(1,2)
+     */
+    markRed: function markRed(x, y) {
+      return this.setFlag(x, y, RED);
+    },
+    /** Clear the red flag from cell at x,y.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.clearRed(1,2)
+     */
+    clearRed: function clearRed(x, y) {
+      return this.clearFlag(x, y, RED);
+    },
+    /** Returns true if a cell at x,y has been set red using [markRed]{@link module:connection-grid-core#markRed}.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * if(core.isRed(1,2)) ...
+     */
+    isRed: function isRed(x, y) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.isFlagSet(x, y, RED);
+    },
+
+    /** Marks a cell at x,y as green.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.markGreen(1,2)
+     */
+    markGreen: function markGreen(x, y) {
+      return this.setFlag(x, y, GREEN);
+    },
+    /** Clear the green flag from cell at x,y.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.clearGreen(1,2)
+     */
+    clearGreen: function clearGreen(x, y) {
+      return this.clearFlag(x, y, GREEN);
+    },
+    /** Returns true if a cell at x,y has been set green using [markGreen]{@link module:connection-grid-core#markGreen}.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * if(core.isGreen(1,2)) ...
+     */
+    isGreen: function isGreen(x, y) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.isFlagSet(x, y, GREEN);
+    },
+
     /** Returns true if a cell at x,y has connections.
       * @param {number} x The x coordinate
       * @param {number} y The y coordinate
@@ -1039,22 +1359,44 @@ module.exports.create = function (spec) {
       if (cell === null) {
         return false;
       }
-      cell = cell & ~VISITED; // discount visited flag
+      // Discount non-dir connection flags
+      cell = cell & ~(VISITED | MASKED | RED | GREEN);
       if (cell === 0) {
         return false;
       }
       var list = this.getNeighborDirs(x, y);
-      for (var key in list) {
-        var sDir = list[key];
-        if (!this.isDir(sDir)) {
-          console.error("hasConnections unknown direction: ", sDir);
-          return false;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var sDir = _step.value;
+
+          if (!this.isDir(sDir)) {
+            console.error("hasConnections unknown direction: ", sDir);
+            return false;
+          }
+          var iDir = _DIR_MAP[sDir];
+          if ((cell & iDir) !== 0) {
+            return true;
+          }
         }
-        var iDir = _DIR_MAP[sDir];
-        if ((cell & iDir) !== 0) {
-          return true;
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
         }
       }
+
       return false;
     },
 
@@ -1075,7 +1417,8 @@ module.exports.create = function (spec) {
       if (!this.isDir(dir)) {
         return false;
       }
-      return this.set(x, y, this.get(x, y) | _DIR_MAP[dir]);
+      // return this.set(x, y, this.get(x, y) | _DIR_MAP[dir]);
+      return this.setFlag(x, y, _DIR_MAP[dir]);
     },
 
     /** Removes a connection for a cell at x,y in a particular direction.
@@ -1094,7 +1437,8 @@ module.exports.create = function (spec) {
       if (!this.isDir(dir)) {
         return false;
       }
-      return this.set(x, y, this.get(x, y) & ~_DIR_MAP[dir]);
+      // return this.set(x, y, this.get(x, y) & ~_DIR_MAP[dir]);
+      return this.clearFlag(x, y, _DIR_MAP[dir]);
     },
 
     /** Maps a connection for a cell at x,y in a particular direction.
@@ -1281,13 +1625,13 @@ module.exports.create = function (spec) {
       if (!this.hasConnections(x, y)) return;
       var cell = this.get(x, y);
       var list = this.getNeighborDirs(x, y);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var sDir = _step.value;
+        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var sDir = _step2.value;
 
           // console.log(`SCANNING: ${sDir}`);
           if (!this.isDir(sDir)) {
@@ -1303,16 +1647,16 @@ module.exports.create = function (spec) {
           }
         }
       } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -1333,13 +1677,13 @@ module.exports.create = function (spec) {
       var cell = this.get(x, y);
       var list = this.getNeighborDirs(x, y);
       var connections = 0;
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var sDir = _step2.value;
+        for (var _iterator3 = list[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var sDir = _step3.value;
 
           // console.log(`DEBUG: connectionCount - scanning: ${sDir}`)
           if (!this.isDir(sDir)) {
@@ -1352,16 +1696,16 @@ module.exports.create = function (spec) {
           }
         }
       } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
           }
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -1398,13 +1742,13 @@ module.exports.create = function (spec) {
         return false;
       }
       var list = this.getNeighborDirs(x, y);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator3 = list[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var sDir = _step3.value;
+        for (var _iterator4 = list[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var sDir = _step4.value;
 
           if (!this.isDir(sDir)) {
             console.error(".reset unknown direction: ", sDir);
@@ -1413,22 +1757,24 @@ module.exports.create = function (spec) {
           this.disconnectUndirected(x, y, sDir);
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
 
       this.clearMask(x, y);
       this.clearVisited(x, y);
+      this.clearRed(x, y);
+      this.clearGreen(x, y);
       return true;
     }
   });
@@ -1625,16 +1971,15 @@ var gridFactory = _dereq_("@mitchallen/grid-square"),
 * let ySize = 6;
 * var grid = gridFactory.create({ x: xSize, y: ySize });
 */
-module.exports.create = function (spec) {
+module.exports.create = function () {
+    var spec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    spec = spec || {};
-    var _x = spec.x || 0;
-    var _y = spec.y || 0;
+    var _spec$x = spec.x,
+        _x = _spec$x === undefined ? 0 : _spec$x,
+        _spec$y = spec.y,
+        _y = _spec$y === undefined ? 0 : _spec$y;
 
-    var _grid = gridFactory.create({
-        x: _x,
-        y: _y
-    });
+    var _grid = gridFactory.create(spec);
 
     _grid.fill(0);
 
@@ -2800,125 +3145,267 @@ module.exports = {
 
 module.exports.create = function (spec) {
 
-    spec = spec || {};
-    var _grid = spec.grid;
+  spec = spec || {};
+  var _grid = spec.grid;
 
-    if (!_grid) {
-        return null;
-    }
+  if (!_grid) {
+    return null;
+  }
 
-    return Object.assign(_grid, {
+  return Object.assign(_grid, {
 
-        // leave undocumented for now
-        carveMaze: function carveMaze(x, y, depth, maxDepth) {
+    solve: function solve(points) {
+      if (points.length < 1) return;
+      var _points$ = points[0],
+          startX = _points$.x,
+          startY = _points$.y;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-            if (depth >= maxDepth) {
-                console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
-                return;
-            }
+      try {
+        for (var _iterator = points[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var point = _step.value;
+          var _point$x = point.x,
+              x = _point$x === undefined ? -1 : _point$x,
+              _point$y = point.y,
+              y = _point$y === undefined ? -1 : _point$y;
 
-            if (!this.isCell(x, y)) {
-                return;
-            }
-            var dirs = this.getShuffledNeighborDirs(x, y);
-            for (var key in dirs) {
-                var sDir = dirs[key];
-                var n = this.getNeighbor(x, y, sDir);
-                if (n === null) {
-                    continue;
-                }
-
-                if (this.isMasked(n.x, n.y)) {
-                    continue;
-                }
-
-                if (this.isCell(n.x, n.y) && !this.hasConnections(n.x, n.y)) {
-                    // Connect cell to neighbor
-                    this.connectUndirected(x, y, sDir);
-                    this.carveMaze(n.x, n.y, depth + 1, maxDepth);
-                }
-            }
-        },
-
-        /**
-          * Method called after [generate]{@link module:maze-generator-core#generate} generates a maze.
-          * <b>This should be overriden by derived class</b>.
-          * The spec parameter will be passed on to this method after the maze has been generated.
-          * The derived method should parse spec for needed values.
-          * @param {Object} spec Named parameters for method
-          * @function
-          * @instance
-          * @memberof module:maze-generator-core
-          * @example <caption>possible usage</caption>
-          * // A derived object would have an afterGenerate method that parses spec.open
-          * let spec = {
-          *    open: [
-          *      { border: "N", list: [ 0, 2 ] },
-          *      { border: "S", list: [ 3 ] }
-          *    ]
-          * };
-          * mazeGenerator.generate(spec);
-          */
-        afterGenerate: function afterGenerate(spec) {
-            // derived class should override
-        },
-
-        /** Generators a maze
-          * @param {Object} options Named parameters for generating a maze
-          * @param {Array} options.mask An array of cells to mask off from maze generation
-          * @param {Array} options.open An array of objects designation what borders to open after generation
-          * @param {Object} opions.start An object containing the x and y parameter of a cell to start maze generation from.
-          * @function
-          * @instance
-          * @memberof module:maze-generator-core
-          * @returns {boolean}
-          * @example <caption>generate</caption>
-          * maze.generate();
-          * @example <caption>mask</caption>
-          * let spec = {
-          *    mask: [
-          *      { c: 2, r: 3 },
-          *      { c: 2, r: 4 }
-          *    ]
-          * };
-          * mazeGenerator.generate(spec);
-          * @example <caption>start and mask</caption>
-          * let spec = {
-          *    start: { c: 3, r: 3 },
-          *    mask: [
-          *      { c: 0, r: 0 },
-          *      { c: 0, r: 1 },
-          *      { c: 1, r: 0 },
-          *      { c: 1, r: 1 }
-          *    ]
-          * };
-          * mazeGenerator.generate(spec);
-          */
-        generate: function generate(spec) {
-
-            spec = spec || {};
-
-            var aMask = spec.mask || [],
-                start = spec.start || {},
-                x = start.c || 0,
-                y = start.r || 0;
-
-            this.fill(0);
-
-            for (var mKey in aMask) {
-                var mask = aMask[mKey];
-                this.mask(mask.c, mask.r);
-            }
-
-            var maxDepth = this.xSize * this.ySize;
-
-            this.carveMaze(x, y, 0, maxDepth);
-
-            // derived class can parse extra spec parameters
-
-            this.afterGenerate(spec);
+          this.markGreen(x, y);
         }
-    });
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      var maxDepth = this.xSize * this.ySize;
+      this.clearAllVisited();
+      this.solveNode(startX, startY, 0, maxDepth);
+    },
+
+    solveNode: function solveNode(x, y, depth, maxDepth) {
+
+      if (depth >= maxDepth) {
+        console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
+        return;
+      }
+
+      if (this.isLeaf(x, y) && !this.isGreen(x, y)) {
+        this.markRed(x, y);
+        return;
+      }
+
+      if (this.visited(x, y)) return;
+      if (this.markVisited(x, y)) ;
+
+      var dirs = this.getShuffledNeighborDirs(x, y);
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = dirs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var sDir = _step2.value;
+
+          var n = this.getNeighbor(x, y, sDir);
+          if (n === null) {
+            continue;
+          }
+          if (!this.connects(x, y, sDir)) continue;
+          if (this.isRed(n.x, n.y)) {
+            continue;
+          }
+
+          this.solveNode(n.x, n.y, depth + 1, maxDepth);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      var connectionCount = 0;
+      var redCount = 0;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = dirs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var _sDir = _step3.value;
+
+          var _n = this.getNeighbor(x, y, _sDir);
+          if (_n === null) {
+            continue;
+          }
+          if (!this.connects(x, y, _sDir)) continue;
+          connectionCount++;
+          if (this.isRed(_n.x, _n.y)) {
+            redCount++;
+            continue;
+          }
+        }
+
+        // redCount = neighbors marked as red
+        // connectionCount = neighbors connected
+        // diff = connectionCount - redCount
+        // if diff == 1
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      var diff = connectionCount - redCount;
+      // console.log(`[${x}, ${y}] connections: ${connectionCount}, red: ${redCount}`)
+      if (diff === 1) {
+        if (!this.isGreen(x, y)) {
+          this.markRed(x, y);
+        }
+      } else {
+        this.markGreen(x, y);
+      }
+    },
+
+    // leave undocumented for now
+    carveMaze: function carveMaze(x, y, depth, maxDepth) {
+
+      if (depth >= maxDepth) {
+        console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
+        return;
+      }
+
+      if (!this.isCell(x, y)) {
+        return;
+      }
+      var dirs = this.getShuffledNeighborDirs(x, y);
+      for (var key in dirs) {
+        var sDir = dirs[key];
+        var n = this.getNeighbor(x, y, sDir);
+        if (n === null) {
+          continue;
+        }
+
+        if (this.isMasked(n.x, n.y)) {
+          continue;
+        }
+
+        if (this.isCell(n.x, n.y) && !this.hasConnections(n.x, n.y)) {
+          // Connect cell to neighbor
+          this.connectUndirected(x, y, sDir);
+          this.carveMaze(n.x, n.y, depth + 1, maxDepth);
+        }
+      }
+    },
+
+    /**
+      * Method called after [generate]{@link module:maze-generator-core#generate} generates a maze.
+      * <b>This should be overriden by derived class</b>.
+      * The spec parameter will be passed on to this method after the maze has been generated.
+      * The derived method should parse spec for needed values.
+      * @param {Object} spec Named parameters for method
+      * @function
+      * @instance
+      * @memberof module:maze-generator-core
+      * @example <caption>possible usage</caption>
+      * // A derived object would have an afterGenerate method that parses spec.open
+      * let spec = {
+      *    open: [
+      *      { border: "N", list: [ 0, 2 ] },
+      *      { border: "S", list: [ 3 ] }
+      *    ]
+      * };
+      * mazeGenerator.generate(spec);
+      */
+    afterGenerate: function afterGenerate(spec) {
+      // derived class should override
+    },
+
+    /** Generators a maze
+      * @param {Object} options Named parameters for generating a maze
+      * @param {Array} options.mask An array of cells to mask off from maze generation
+      * @param {Array} options.open An array of objects designation what borders to open after generation
+      * @param {Object} opions.start An object containing the x and y parameter of a cell to start maze generation from.
+      * @function
+      * @instance
+      * @memberof module:maze-generator-core
+      * @returns {boolean}
+      * @example <caption>generate</caption>
+      * maze.generate();
+      * @example <caption>mask</caption>
+      * let spec = {
+      *    mask: [
+      *      { c: 2, r: 3 },
+      *      { c: 2, r: 4 }
+      *    ]
+      * };
+      * mazeGenerator.generate(spec);
+      * @example <caption>start and mask</caption>
+      * let spec = {
+      *    start: { c: 3, r: 3 },
+      *    mask: [
+      *      { c: 0, r: 0 },
+      *      { c: 0, r: 1 },
+      *      { c: 1, r: 0 },
+      *      { c: 1, r: 1 }
+      *    ]
+      * };
+      * mazeGenerator.generate(spec);
+      */
+    generate: function generate(spec) {
+
+      spec = spec || {};
+
+      var aMask = spec.mask || [],
+          start = spec.start || {},
+          x = start.c || 0,
+          y = start.r || 0;
+
+      this.fill(0);
+
+      for (var mKey in aMask) {
+        var mask = aMask[mKey];
+        this.mask(mask.c, mask.r);
+      }
+
+      var maxDepth = this.xSize * this.ySize;
+
+      this.carveMaze(x, y, 0, maxDepth);
+
+      // derived class can parse extra spec parameters
+
+      this.afterGenerate(spec);
+    }
+  });
 };
 
 },{}]},{},[1])(1)
@@ -3041,6 +3528,8 @@ module.exports.create = function (spec) {
   // bit masks
   var VISITED = 0x01;
   var MASKED = 0x02;
+  var RED = 0x04;
+  var GREEN = 0x08;
 
   Object.defineProperties(_grid, {
     "dirMap": {
@@ -3131,6 +3620,58 @@ module.exports.create = function (spec) {
       var shuffler = shuffleFactory.create({ array: this.getNeighborDirs(x, y) });
       return shuffler.shuffle();
     },
+
+    /** Sets a flag in a cell at x,y
+        * @param {number} x The x coordinate
+        * @param {number} y The y coordinate
+        * @function
+        * @instance
+        * @returns {boolean}
+        * @memberof module:connection-grid-core
+        * @example <caption>usage</caption>
+        * core.setFlag(1,2,VISITED);
+       */
+    setFlag: function setFlag(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.set(x, y, this.get(x, y) | flag);
+    },
+
+    /** Clears a flag from cell
+       * @param {number} x The x coordinate
+       * @param {number} y The y coordinate
+       * @function
+       * @instance
+       * @returns {boolean}
+       * @memberof module:connection-grid-core
+       * @example <caption>usage</caption>
+       * core.clearFlag(1,2,flag);
+      */
+    clearFlag: function clearFlag(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.set(x, y, this.get(x, y) & ~flag);
+    },
+
+    /** Returns true if a cell at x,y exists and flag has been set.
+    * @param {number} x The x coordinate
+    * @param {number} y The y coordinate
+    * @function
+    * @instance
+    * @returns {boolean}
+    * @memberof module:connection-grid-core
+    * @example <caption>usage</caption>
+    * if(core.isFlagSet(x,y,VISITED)) ...
+    */
+    isFlagSet: function isFlagSet(x, y, flag) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return (this.get(x, y) & flag) !== 0;
+    },
+
     /** Marks a cell at x,y as visited.
       * @param {number} x The x coordinate
       * @param {number} y The y coordinate
@@ -3142,7 +3683,8 @@ module.exports.create = function (spec) {
       * core.markVisited(1,2);
      */
     markVisited: function markVisited(x, y) {
-      return this.set(x, y, this.get(x, y) | VISITED);
+      // return this.set(x, y, this.get(x, y) | VISITED);
+      return this.setFlag(x, y, VISITED);
     },
     /** Clears visit flag from cell
       * @param {number} x The x coordinate
@@ -3155,7 +3697,8 @@ module.exports.create = function (spec) {
       * core.clearVisited(1,2);
      */
     clearVisited: function clearVisited(x, y) {
-      return this.set(x, y, this.get(x, y) & ~VISITED);
+      // return this.set(x, y, this.get(x, y) & ~VISITED);
+      return this.clearFlag(x, y, VISITED);
     },
     /** Clear all visited flag from grid
       * @function
@@ -3187,7 +3730,8 @@ module.exports.create = function (spec) {
       if (!this.isCell(x, y)) {
         return false;
       }
-      return (this.get(x, y) & VISITED) !== 0;
+      // return ((this.get(x, y) & VISITED) !== 0);
+      return this.isFlagSet(x, y, VISITED);
     },
     /** Marks a cell at x,y as masked.
       * Useful for maze generators to mark cells to skip
@@ -3201,7 +3745,8 @@ module.exports.create = function (spec) {
       * core.mask(1,2)
      */
     mask: function mask(x, y) {
-      return this.set(x, y, this.get(x, y) | MASKED);
+      // return this.set(x, y, this.get(x, y) | MASKED);
+      return this.setFlag(x, y, MASKED);
     },
     /** Clear the mask flag from cell at x,y.
       * Useful for maze generators to mark and clear cells to skip
@@ -3215,7 +3760,8 @@ module.exports.create = function (spec) {
       * core.clearMask(1,2)
      */
     clearMask: function clearMask(x, y) {
-      return this.set(x, y, this.get(x, y) & ~MASKED);
+      // return this.set(x, y, this.get(x, y) & ~MASKED);
+      return this.clearFlag(x, y, MASKED);
     },
     /** Returns true if a cell at x,y has been marked using [mask]{@link module:connection-grid-core#mask}.
       * @param {number} x The x coordinate
@@ -3231,8 +3777,96 @@ module.exports.create = function (spec) {
       if (!this.isCell(x, y)) {
         return false;
       }
-      return (this.get(x, y) & MASKED) !== 0;
+      // return ((this.get(x, y) & MASKED) !== 0);
+      return this.isFlagSet(x, y, MASKED);
     },
+
+    /** Marks a cell at x,y as red.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.markRed(1,2)
+     */
+    markRed: function markRed(x, y) {
+      return this.setFlag(x, y, RED);
+    },
+    /** Clear the red flag from cell at x,y.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.clearRed(1,2)
+     */
+    clearRed: function clearRed(x, y) {
+      return this.clearFlag(x, y, RED);
+    },
+    /** Returns true if a cell at x,y has been set red using [markRed]{@link module:connection-grid-core#markRed}.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * if(core.isRed(1,2)) ...
+     */
+    isRed: function isRed(x, y) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.isFlagSet(x, y, RED);
+    },
+
+    /** Marks a cell at x,y as green.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.markGreen(1,2)
+     */
+    markGreen: function markGreen(x, y) {
+      return this.setFlag(x, y, GREEN);
+    },
+    /** Clear the green flag from cell at x,y.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * core.clearGreen(1,2)
+     */
+    clearGreen: function clearGreen(x, y) {
+      return this.clearFlag(x, y, GREEN);
+    },
+    /** Returns true if a cell at x,y has been set green using [markGreen]{@link module:connection-grid-core#markGreen}.
+      * @param {number} x The x coordinate
+      * @param {number} y The y coordinate
+      * @function
+      * @instance
+      * @returns {boolean}
+      * @memberof module:connection-grid-core
+      * @example <caption>usage</caption>
+      * if(core.isGreen(1,2)) ...
+     */
+    isGreen: function isGreen(x, y) {
+      if (!this.isCell(x, y)) {
+        return false;
+      }
+      return this.isFlagSet(x, y, GREEN);
+    },
+
     /** Returns true if a cell at x,y has connections.
       * @param {number} x The x coordinate
       * @param {number} y The y coordinate
@@ -3248,22 +3882,44 @@ module.exports.create = function (spec) {
       if (cell === null) {
         return false;
       }
-      cell = cell & ~VISITED; // discount visited flag
+      // Discount non-dir connection flags
+      cell = cell & ~(VISITED | MASKED | RED | GREEN);
       if (cell === 0) {
         return false;
       }
       var list = this.getNeighborDirs(x, y);
-      for (var key in list) {
-        var sDir = list[key];
-        if (!this.isDir(sDir)) {
-          console.error("hasConnections unknown direction: ", sDir);
-          return false;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var sDir = _step.value;
+
+          if (!this.isDir(sDir)) {
+            console.error("hasConnections unknown direction: ", sDir);
+            return false;
+          }
+          var iDir = _DIR_MAP[sDir];
+          if ((cell & iDir) !== 0) {
+            return true;
+          }
         }
-        var iDir = _DIR_MAP[sDir];
-        if ((cell & iDir) !== 0) {
-          return true;
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
         }
       }
+
       return false;
     },
 
@@ -3284,7 +3940,8 @@ module.exports.create = function (spec) {
       if (!this.isDir(dir)) {
         return false;
       }
-      return this.set(x, y, this.get(x, y) | _DIR_MAP[dir]);
+      // return this.set(x, y, this.get(x, y) | _DIR_MAP[dir]);
+      return this.setFlag(x, y, _DIR_MAP[dir]);
     },
 
     /** Removes a connection for a cell at x,y in a particular direction.
@@ -3303,7 +3960,8 @@ module.exports.create = function (spec) {
       if (!this.isDir(dir)) {
         return false;
       }
-      return this.set(x, y, this.get(x, y) & ~_DIR_MAP[dir]);
+      // return this.set(x, y, this.get(x, y) & ~_DIR_MAP[dir]);
+      return this.clearFlag(x, y, _DIR_MAP[dir]);
     },
 
     /** Maps a connection for a cell at x,y in a particular direction.
@@ -3490,13 +4148,13 @@ module.exports.create = function (spec) {
       if (!this.hasConnections(x, y)) return;
       var cell = this.get(x, y);
       var list = this.getNeighborDirs(x, y);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var sDir = _step.value;
+        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var sDir = _step2.value;
 
           // console.log(`SCANNING: ${sDir}`);
           if (!this.isDir(sDir)) {
@@ -3512,16 +4170,16 @@ module.exports.create = function (spec) {
           }
         }
       } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -3542,13 +4200,13 @@ module.exports.create = function (spec) {
       var cell = this.get(x, y);
       var list = this.getNeighborDirs(x, y);
       var connections = 0;
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var sDir = _step2.value;
+        for (var _iterator3 = list[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var sDir = _step3.value;
 
           // console.log(`DEBUG: connectionCount - scanning: ${sDir}`)
           if (!this.isDir(sDir)) {
@@ -3561,16 +4219,16 @@ module.exports.create = function (spec) {
           }
         }
       } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
           }
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -3607,13 +4265,13 @@ module.exports.create = function (spec) {
         return false;
       }
       var list = this.getNeighborDirs(x, y);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator3 = list[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var sDir = _step3.value;
+        for (var _iterator4 = list[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var sDir = _step4.value;
 
           if (!this.isDir(sDir)) {
             console.error(".reset unknown direction: ", sDir);
@@ -3622,22 +4280,24 @@ module.exports.create = function (spec) {
           this.disconnectUndirected(x, y, sDir);
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
 
       this.clearMask(x, y);
       this.clearVisited(x, y);
+      this.clearRed(x, y);
+      this.clearGreen(x, y);
       return true;
     }
   });
@@ -3834,16 +4494,15 @@ var gridFactory = _dereq_("@mitchallen/grid-square"),
 * let ySize = 6;
 * var grid = gridFactory.create({ x: xSize, y: ySize });
 */
-module.exports.create = function (spec) {
+module.exports.create = function () {
+    var spec = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    spec = spec || {};
-    var _x = spec.x || 0;
-    var _y = spec.y || 0;
+    var _spec$x = spec.x,
+        _x = _spec$x === undefined ? 0 : _spec$x,
+        _spec$y = spec.y,
+        _y = _spec$y === undefined ? 0 : _spec$y;
 
-    var _grid = gridFactory.create({
-        x: _x,
-        y: _y
-    });
+    var _grid = gridFactory.create(spec);
 
     _grid.fill(0);
 
@@ -3959,125 +4618,267 @@ module.exports.create = function (spec) {
 
 module.exports.create = function (spec) {
 
-    spec = spec || {};
-    var _grid = spec.grid;
+  spec = spec || {};
+  var _grid = spec.grid;
 
-    if (!_grid) {
-        return null;
-    }
+  if (!_grid) {
+    return null;
+  }
 
-    return Object.assign(_grid, {
+  return Object.assign(_grid, {
 
-        // leave undocumented for now
-        carveMaze: function carveMaze(x, y, depth, maxDepth) {
+    solve: function solve(points) {
+      if (points.length < 1) return;
+      var _points$ = points[0],
+          startX = _points$.x,
+          startY = _points$.y;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-            if (depth >= maxDepth) {
-                console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
-                return;
-            }
+      try {
+        for (var _iterator = points[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var point = _step.value;
+          var _point$x = point.x,
+              x = _point$x === undefined ? -1 : _point$x,
+              _point$y = point.y,
+              y = _point$y === undefined ? -1 : _point$y;
 
-            if (!this.isCell(x, y)) {
-                return;
-            }
-            var dirs = this.getShuffledNeighborDirs(x, y);
-            for (var key in dirs) {
-                var sDir = dirs[key];
-                var n = this.getNeighbor(x, y, sDir);
-                if (n === null) {
-                    continue;
-                }
-
-                if (this.isMasked(n.x, n.y)) {
-                    continue;
-                }
-
-                if (this.isCell(n.x, n.y) && !this.hasConnections(n.x, n.y)) {
-                    // Connect cell to neighbor
-                    this.connectUndirected(x, y, sDir);
-                    this.carveMaze(n.x, n.y, depth + 1, maxDepth);
-                }
-            }
-        },
-
-        /**
-          * Method called after [generate]{@link module:maze-generator-core#generate} generates a maze.
-          * <b>This should be overriden by derived class</b>.
-          * The spec parameter will be passed on to this method after the maze has been generated.
-          * The derived method should parse spec for needed values.
-          * @param {Object} spec Named parameters for method
-          * @function
-          * @instance
-          * @memberof module:maze-generator-core
-          * @example <caption>possible usage</caption>
-          * // A derived object would have an afterGenerate method that parses spec.open
-          * let spec = {
-          *    open: [
-          *      { border: "N", list: [ 0, 2 ] },
-          *      { border: "S", list: [ 3 ] }
-          *    ]
-          * };
-          * mazeGenerator.generate(spec);
-          */
-        afterGenerate: function afterGenerate(spec) {
-            // derived class should override
-        },
-
-        /** Generators a maze
-          * @param {Object} options Named parameters for generating a maze
-          * @param {Array} options.mask An array of cells to mask off from maze generation
-          * @param {Array} options.open An array of objects designation what borders to open after generation
-          * @param {Object} opions.start An object containing the x and y parameter of a cell to start maze generation from.
-          * @function
-          * @instance
-          * @memberof module:maze-generator-core
-          * @returns {boolean}
-          * @example <caption>generate</caption>
-          * maze.generate();
-          * @example <caption>mask</caption>
-          * let spec = {
-          *    mask: [
-          *      { c: 2, r: 3 },
-          *      { c: 2, r: 4 }
-          *    ]
-          * };
-          * mazeGenerator.generate(spec);
-          * @example <caption>start and mask</caption>
-          * let spec = {
-          *    start: { c: 3, r: 3 },
-          *    mask: [
-          *      { c: 0, r: 0 },
-          *      { c: 0, r: 1 },
-          *      { c: 1, r: 0 },
-          *      { c: 1, r: 1 }
-          *    ]
-          * };
-          * mazeGenerator.generate(spec);
-          */
-        generate: function generate(spec) {
-
-            spec = spec || {};
-
-            var aMask = spec.mask || [],
-                start = spec.start || {},
-                x = start.c || 0,
-                y = start.r || 0;
-
-            this.fill(0);
-
-            for (var mKey in aMask) {
-                var mask = aMask[mKey];
-                this.mask(mask.c, mask.r);
-            }
-
-            var maxDepth = this.xSize * this.ySize;
-
-            this.carveMaze(x, y, 0, maxDepth);
-
-            // derived class can parse extra spec parameters
-
-            this.afterGenerate(spec);
+          this.markGreen(x, y);
         }
-    });
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      var maxDepth = this.xSize * this.ySize;
+      this.clearAllVisited();
+      this.solveNode(startX, startY, 0, maxDepth);
+    },
+
+    solveNode: function solveNode(x, y, depth, maxDepth) {
+
+      if (depth >= maxDepth) {
+        console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
+        return;
+      }
+
+      if (this.isLeaf(x, y) && !this.isGreen(x, y)) {
+        this.markRed(x, y);
+        return;
+      }
+
+      if (this.visited(x, y)) return;
+      if (this.markVisited(x, y)) ;
+
+      var dirs = this.getShuffledNeighborDirs(x, y);
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = dirs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var sDir = _step2.value;
+
+          var n = this.getNeighbor(x, y, sDir);
+          if (n === null) {
+            continue;
+          }
+          if (!this.connects(x, y, sDir)) continue;
+          if (this.isRed(n.x, n.y)) {
+            continue;
+          }
+
+          this.solveNode(n.x, n.y, depth + 1, maxDepth);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      var connectionCount = 0;
+      var redCount = 0;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = dirs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var _sDir = _step3.value;
+
+          var _n = this.getNeighbor(x, y, _sDir);
+          if (_n === null) {
+            continue;
+          }
+          if (!this.connects(x, y, _sDir)) continue;
+          connectionCount++;
+          if (this.isRed(_n.x, _n.y)) {
+            redCount++;
+            continue;
+          }
+        }
+
+        // redCount = neighbors marked as red
+        // connectionCount = neighbors connected
+        // diff = connectionCount - redCount
+        // if diff == 1
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      var diff = connectionCount - redCount;
+      // console.log(`[${x}, ${y}] connections: ${connectionCount}, red: ${redCount}`)
+      if (diff === 1) {
+        if (!this.isGreen(x, y)) {
+          this.markRed(x, y);
+        }
+      } else {
+        this.markGreen(x, y);
+      }
+    },
+
+    // leave undocumented for now
+    carveMaze: function carveMaze(x, y, depth, maxDepth) {
+
+      if (depth >= maxDepth) {
+        console.warn("MAXIMUM DEPTH REACHED: %d", maxDepth);
+        return;
+      }
+
+      if (!this.isCell(x, y)) {
+        return;
+      }
+      var dirs = this.getShuffledNeighborDirs(x, y);
+      for (var key in dirs) {
+        var sDir = dirs[key];
+        var n = this.getNeighbor(x, y, sDir);
+        if (n === null) {
+          continue;
+        }
+
+        if (this.isMasked(n.x, n.y)) {
+          continue;
+        }
+
+        if (this.isCell(n.x, n.y) && !this.hasConnections(n.x, n.y)) {
+          // Connect cell to neighbor
+          this.connectUndirected(x, y, sDir);
+          this.carveMaze(n.x, n.y, depth + 1, maxDepth);
+        }
+      }
+    },
+
+    /**
+      * Method called after [generate]{@link module:maze-generator-core#generate} generates a maze.
+      * <b>This should be overriden by derived class</b>.
+      * The spec parameter will be passed on to this method after the maze has been generated.
+      * The derived method should parse spec for needed values.
+      * @param {Object} spec Named parameters for method
+      * @function
+      * @instance
+      * @memberof module:maze-generator-core
+      * @example <caption>possible usage</caption>
+      * // A derived object would have an afterGenerate method that parses spec.open
+      * let spec = {
+      *    open: [
+      *      { border: "N", list: [ 0, 2 ] },
+      *      { border: "S", list: [ 3 ] }
+      *    ]
+      * };
+      * mazeGenerator.generate(spec);
+      */
+    afterGenerate: function afterGenerate(spec) {
+      // derived class should override
+    },
+
+    /** Generators a maze
+      * @param {Object} options Named parameters for generating a maze
+      * @param {Array} options.mask An array of cells to mask off from maze generation
+      * @param {Array} options.open An array of objects designation what borders to open after generation
+      * @param {Object} opions.start An object containing the x and y parameter of a cell to start maze generation from.
+      * @function
+      * @instance
+      * @memberof module:maze-generator-core
+      * @returns {boolean}
+      * @example <caption>generate</caption>
+      * maze.generate();
+      * @example <caption>mask</caption>
+      * let spec = {
+      *    mask: [
+      *      { c: 2, r: 3 },
+      *      { c: 2, r: 4 }
+      *    ]
+      * };
+      * mazeGenerator.generate(spec);
+      * @example <caption>start and mask</caption>
+      * let spec = {
+      *    start: { c: 3, r: 3 },
+      *    mask: [
+      *      { c: 0, r: 0 },
+      *      { c: 0, r: 1 },
+      *      { c: 1, r: 0 },
+      *      { c: 1, r: 1 }
+      *    ]
+      * };
+      * mazeGenerator.generate(spec);
+      */
+    generate: function generate(spec) {
+
+      spec = spec || {};
+
+      var aMask = spec.mask || [],
+          start = spec.start || {},
+          x = start.c || 0,
+          y = start.r || 0;
+
+      this.fill(0);
+
+      for (var mKey in aMask) {
+        var mask = aMask[mKey];
+        this.mask(mask.c, mask.r);
+      }
+
+      var maxDepth = this.xSize * this.ySize;
+
+      this.carveMaze(x, y, 0, maxDepth);
+
+      // derived class can parse extra spec parameters
+
+      this.afterGenerate(spec);
+    }
+  });
 };
 
 },{}]},{},[1])(1)
@@ -4308,10 +5109,6 @@ module.exports.create = function () {
       // print top north walls
 
       var border = "";
-      // var lim = _x  * 2;
-      // for( var i = 0; i < lim; i++ ) {
-      //     border += i === 0 ? " " : this.connects(i,0,"N") ? " " : "_";
-      // }
       for (var i = 0; i < _x; i++) {
         border += i === 0 ? " " : "";
         border += this.connects(i, 0, "N") ? "  " : "__";
@@ -4323,10 +5120,11 @@ module.exports.create = function () {
         var row = this.connects(0, my, "W") ? " " : "|";
         for (var mx = 0; mx < _x; mx++) {
           var isTarget = tX == mx && tY == my;
+          var isGreen = this.isGreen(mx, my);
           // See Unicode characters: https://jrgraphix.net/r/Unicode/2300-23FF
           // https://jrgraphix.net/r/Unicode/2500-257F
-          var southClosed = isTarget ? "\u23C2" : "_";
-          var southOpen = isTarget ? "\u25BC" : " ";
+          var southClosed = isTarget ? "\u23C2" : isGreen ? "\u235C" : "_";
+          var southOpen = isTarget ? "\u25BC" : isGreen ? "\u233E" : " ";
           row += this.connects(mx, my, "S") ? southOpen : southClosed;
           if (this.connects(mx, my, "E")) {
             row += ((this.get(mx, my) | this.get(mx + 1, my)) & dirMap.S) !== 0 ? " " : "_";
@@ -4538,6 +5336,7 @@ module.exports = function (spec) {
                 var py = y * 2;
                 for (var x = 0; x < _x; x++) {
                     var cell = this.get(x, y);
+                    var isGreen = this.isGreen(x, y);
 
                     if (cell !== 0) {
                         var px = x * 2;
@@ -4553,6 +5352,10 @@ module.exports = function (spec) {
                             ne = "E";
                             sw = "SW";
                             se = "SE";
+                        }
+
+                        if (isGreen) {
+                            canvas.set(px + 1, ry + 1, "\u233E");
                         }
 
                         if (!this.connects(x, y, "N")) {
