@@ -37,7 +37,7 @@ Example:
         <meta charset="utf-8">
         <title>Maze Generator Example</title>
         <meta name="description" content="Maze Generator Example">
-        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.22/dist/maze-generator.min.js"></script>
+        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.23/dist/maze-generator.min.js"></script>
         <script>
           var factory = window.MitchAllen.MazeGenerator;
           console.log(factory);
