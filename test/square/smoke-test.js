@@ -186,7 +186,7 @@ describe('Square method', function() {
         done();
     });
 
-    it('generate mask should mask center parts of the maze', function(done) {
+    it.only('generate mask should mask center parts of the maze', function(done) {
         var mazeGenerator = _module.Square({ x: 5, y: 6 });
         should.exist(mazeGenerator);
         let spec = {

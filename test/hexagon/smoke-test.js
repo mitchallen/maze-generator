@@ -202,4 +202,19 @@ describe('Hexagon smoke test', function() {
         mazeGenerator.printBoard();
         done();
     });
+
+    it('getMaxDistance for hexagon maze 5x6', function (done) {
+      var mazeGenerator = _module.Hexagon({ x: 5, y: 6 });
+      should.exist(mazeGenerator);
+      let spec = {
+          start: { c: 0, r: 0 },
+      };
+      mazeGenerator.generate(spec);
+      let d = mazeGenerator.getMaxDistance(0, 0);
+      console.log(d);
+      // TODO - add target handler
+      mazeGenerator.printBoard({ target: d });
+      // console.log('\ntarget: ', d, '\n');
+      done();
+    });
 });

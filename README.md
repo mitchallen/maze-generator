@@ -15,6 +15,7 @@ You must use __npm__ __2.7.0__ or higher because of the scoped package name.
 
 ## Usage
 
+```js
     "use strict";
 
     var mazeFactory = require("@mitchallen/maze-generator");
@@ -23,22 +24,20 @@ You must use __npm__ __2.7.0__ or higher because of the scoped package name.
     let ySize = 6;
 
     var maze = mazeFactory.Square({ x: xSize, y: ySize });
+```
     
 ## Browser Usage:
 
 Example:
 
+```html
     <!DOCTYPE html>
     <html>
       <head>
         <meta charset="utf-8">
         <title>Maze Generator Example</title>
         <meta name="description" content="Maze Generator Example">
-        <!-- either cdn should work -->
-        <!--
-        <script src="https://cdn.rawgit.com/mitchallen/maze-generator/v0.1.21/dist/maze-generator.min.js"></script>
-        -->
-        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.21/dist/maze-generator.min.js"></script>
+        <script src="https://unpkg.com/@mitchallen/maze-generator@0.1.22/dist/maze-generator.min.js"></script>
         <script>
           var factory = window.MitchAllen.MazeGenerator;
           console.log(factory);
@@ -54,6 +53,7 @@ Example:
         <p>See JavaScript developer console for output.</p>
       </body>
     </html>
+```
 
 
 * * *
