@@ -186,7 +186,7 @@ describe('Square method', function() {
         done();
     });
 
-    it.only('generate mask should mask center parts of the maze', function(done) {
+    it('generate mask should mask center parts of the maze', function(done) {
         var mazeGenerator = _module.Square({ x: 5, y: 6 });
         should.exist(mazeGenerator);
         let spec = {
@@ -197,6 +197,37 @@ describe('Square method', function() {
                 { c: 2, r: 3 },
                 { c: 3, r: 2 },
             ]
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate mask should mask center parts of the maze', function(done) {
+        var mazeGenerator = _module.Square({ x: 25, y: 25 });
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 0, r: 0 },
+            mask: [
+                { c: 1, r: 2 },
+                { c: 2, r: 2 },
+                { c: 2, r: 3 },
+                { c: 3, r: 2 },
+            ]
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+    });
+
+    it('generate should use depth function', function(done) {
+        var mazeGenerator = _module.Square({ x: 5, y: 5 });
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 0, r: 0 },
+            depthFunction: function (depth, maxDepth) { 
+                return depth > 3 || depth >= maxDepth; 
+            }
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();

@@ -202,4 +202,18 @@ describe('Triangle smoke test', function() {
         mazeGenerator.printBoard();
         done();
     });
+
+    it('generate should use depth function', function(done) {
+        var mazeGenerator = _module.Triangle({ x: 5, y: 5 });
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 0, r: 0 },
+            depthFunction: function (depth, maxDepth) { 
+                return depth > 3 || depth >= maxDepth; 
+              }
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+    });
 });

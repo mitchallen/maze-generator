@@ -202,8 +202,6 @@ describe('Circle smoke test', function() {
         done();
     });
 
-
-
     it('generate 7 method should generate a maze', function(done) {
         var mazeGenerator = _module.Circle({ rings: 7 });
         should.exist(mazeGenerator);

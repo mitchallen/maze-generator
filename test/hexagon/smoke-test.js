@@ -240,4 +240,19 @@ describe('Hexagon smoke test', function() {
       mazeGenerator.printBoard({ target: d });
       done();
     });
+
+    it('should use depth function', function (done) {
+        let size = { x: 5, y: 6 };
+        var mazeGenerator = _module.Hexagon(size);
+        should.exist(mazeGenerator);
+        let spec = {
+            start: { c: 0, r: 0 },
+            depthFunction: function (depth, maxDepth) { 
+                return depth > 3 || depth >= maxDepth; 
+            }
+        };
+        mazeGenerator.generate(spec);
+        mazeGenerator.printBoard();
+        done();
+      });
 });
