@@ -1,6 +1,6 @@
 {
   "name": "@mitchallen/maze-generator",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "maze generator",
   "main": "dist/maze-generator.js",
   "scripts": {
