@@ -40,7 +40,7 @@
     "yargs-parser": "^20.2.4"
   },
   "dependencies": {
-    "@mitchallen/connection-grid": "^0.1.33",
+    "@mitchallen/connection-grid": "^0.1.34",
     "@mitchallen/connection-grid-square": "^0.1.17",
     "@mitchallen/maze-generator-core": "^0.1.13",
     "@mitchallen/maze-generator-square": "^0.1.24"

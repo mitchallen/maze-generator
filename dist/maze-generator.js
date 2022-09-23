@@ -2449,8 +2449,6 @@ module.exports = function () {
 var squareGrid = _dereq_('@mitchallen/grid-square').create,
     circleGrid = _dereq_('./circle');
 
-console.log(squareGrid);
-
 var createGrid = function createGrid(spec) {
     console.warn("@mitchallen/grid: .create is deprecated. Use .Square instead.");
     return squareGrid(spec);
@@ -3166,8 +3164,6 @@ module.exports = function () {
 
 var squareGrid = _dereq_('@mitchallen/grid-square').create,
     circleGrid = _dereq_('./circle');
-
-console.log(squareGrid);
 
 var createGrid = function createGrid(spec) {
     console.warn("@mitchallen/grid: .create is deprecated. Use .Square instead.");
