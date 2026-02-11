@@ -5301,39 +5301,32 @@ module.exports.create = function () {
 "use strict";
 
 var gridFactory = _dereq_("@mitchallen/grid");
-
 module.exports.Canvas = function (spec) {
-
-    spec = spec || {};
-
-    var _columns = spec.columns || 0,
-        _rows = spec.rows || 0,
-        _fill = spec.fill || " ";
-
-    var _gridSpec = {
-        x: _columns,
-        y: _rows
-    };
-
-    var grid = gridFactory.Square(_gridSpec);
-
-    grid.fill(_fill);
-
-    return Object.assign(grid, {
-        toString: function toString() {
-            var str = "";
-            for (var row = 0; row < _rows; row++) {
-                for (var col = 0; col < _columns; col++) {
-                    str += this.get(col, row);
-                }
-                str += "\n";
-            }
-            return str;
-        },
-        print: function print() {
-            console.log(this.toString());
+  spec = spec || {};
+  var _columns = spec.columns || 0,
+    _rows = spec.rows || 0,
+    _fill = spec.fill || " ";
+  var _gridSpec = {
+    x: _columns,
+    y: _rows
+  };
+  var grid = gridFactory.Square(_gridSpec);
+  grid.fill(_fill);
+  return Object.assign(grid, {
+    toString: function toString() {
+      var str = "";
+      for (var row = 0; row < _rows; row++) {
+        for (var col = 0; col < _columns; col++) {
+          str += this.get(col, row);
         }
-    });
+        str += "\n";
+      }
+      return str;
+    },
+    print: function print() {
+      console.log(this.toString());
+    }
+  });
 };
 
 },{"@mitchallen/grid":2}],6:[function(_dereq_,module,exports){
@@ -5348,84 +5341,73 @@ module.exports.Canvas = function (spec) {
 "use strict";
 
 var connectionGridFactory = _dereq_("@mitchallen/connection-grid"),
-    baseGrid = _dereq_("@mitchallen/maze-generator-core");
-
+  baseGrid = _dereq_("@mitchallen/maze-generator-core");
 module.exports = function (spec) {
-
-    spec = spec || {};
-
-    var _rings = spec.rings || 0;
-
-    var _gridSpec = {
-        rings: _rings
-    };
-
-    var _grid = connectionGridFactory.Circle(_gridSpec);
-    if (!_grid) {
-        return null;
-    }
-
-    var obj = baseGrid.create({
-        grid: _grid
-    });
-
-    return Object.assign(_grid, {
-
-        printDivider: function printDivider(ring) {
-            var row = "",
-                rowSize = _grid.ringSize(ring),
-                lim = rowSize * 2 + 1;
-            for (var i = 0; i < lim; i++) {
-                row += "_";
-            }
-            console.log(row);
-        },
-
-        printBorder: function printBorder() {
-            this.printDivider(_rings - 1);
-        },
-
-        printBoard: function printBoard() {
-            console.log("CIRCLE MAZE: %d", _rings);
-            this.printBorder();
-            var innerWall = "_";
-            var innerOpen = " ";
-            var incWidth = 1;
-            for (var ring = _rings - 1; ring >= 0; ring--) {
-                var lim = _grid.ringSize(ring);
-                // console.log(lim);
-                var row = "";
-                if (ring === 0) {
-                    row = "|";
-                    var cLim = _grid.ringSize(_rings - 1) - 1;
-                    for (var ci = 0; ci < cLim; ci++) {
-                        row += "__";
-                    }
-                    row += "_|";
-                    console.log(row);
-                    continue;
-                }
-                if (ring != _rings - 1) {
-                    if (this.ringSize(ring) != this.ringSize(ring + 1)) {
-                        incWidth *= 2;
-                        for (var i = 0; i < incWidth; i++) {
-                            innerWall += "_";
-                            innerOpen += " ";
-                        }
-                    }
-                }
-                for (var pos = 0; pos < lim; pos++) {
-                    if (pos === 0) {
-                        row += this.connects(ring, pos, "CCW") ? "_" : "|";
-                    }
-                    row += this.connectsAny(ring, pos, ["T", "T0", "T1"]) ? innerOpen : innerWall;
-                    row += this.connects(ring, pos, "CW") ? "_" : "|";
-                }
-
-                console.log(row);
-            }
+  spec = spec || {};
+  var _rings = spec.rings || 0;
+  var _gridSpec = {
+    rings: _rings
+  };
+  var _grid = connectionGridFactory.Circle(_gridSpec);
+  if (!_grid) {
+    return null;
+  }
+  var obj = baseGrid.create({
+    grid: _grid
+  });
+  return Object.assign(_grid, {
+    printDivider: function printDivider(ring) {
+      var row = "",
+        rowSize = _grid.ringSize(ring),
+        lim = rowSize * 2 + 1;
+      for (var i = 0; i < lim; i++) {
+        row += "_";
+      }
+      console.log(row);
+    },
+    printBorder: function printBorder() {
+      this.printDivider(_rings - 1);
+    },
+    printBoard: function printBoard() {
+      console.log("CIRCLE MAZE: %d", _rings);
+      this.printBorder();
+      var innerWall = "_";
+      var innerOpen = " ";
+      var incWidth = 1;
+      for (var ring = _rings - 1; ring >= 0; ring--) {
+        var lim = _grid.ringSize(ring);
+        // console.log(lim);
+        var row = "";
+        if (ring === 0) {
+          row = "|";
+          var cLim = _grid.ringSize(_rings - 1) - 1;
+          for (var ci = 0; ci < cLim; ci++) {
+            row += "__";
+          }
+          row += "_|";
+          console.log(row);
+          continue;
         }
-    });
+        if (ring != _rings - 1) {
+          if (this.ringSize(ring) != this.ringSize(ring + 1)) {
+            incWidth *= 2;
+            for (var i = 0; i < incWidth; i++) {
+              innerWall += "_";
+              innerOpen += " ";
+            }
+          }
+        }
+        for (var pos = 0; pos < lim; pos++) {
+          if (pos === 0) {
+            row += this.connects(ring, pos, "CCW") ? "_" : "|";
+          }
+          row += this.connectsAny(ring, pos, ["T", "T0", "T1"]) ? innerOpen : innerWall;
+          row += this.connects(ring, pos, "CW") ? "_" : "|";
+        }
+        console.log(row);
+      }
+    }
+  });
 };
 
 },{"@mitchallen/connection-grid":1,"@mitchallen/maze-generator-core":3}],7:[function(_dereq_,module,exports){
@@ -5440,101 +5422,86 @@ module.exports = function (spec) {
 "use strict";
 
 var connectionGridFactory = _dereq_("@mitchallen/connection-grid"),
-    baseGrid = _dereq_("@mitchallen/maze-generator-core"),
-    ascii = _dereq_("./ascii-canvas");
-
+  baseGrid = _dereq_("@mitchallen/maze-generator-core"),
+  ascii = _dereq_("./ascii-canvas");
 module.exports = function (spec) {
-
-    spec = spec || {};
-
-    var _x = spec.x || 0;
-    var _y = spec.y || 0;
-
-    var _gridSpec = {
-        x: _x,
-        y: _y
-    };
-
-    var _connectionGrid = connectionGridFactory.Hexagon(_gridSpec);
-    if (!_connectionGrid) {
-        return null;
-    }
-
-    var obj = baseGrid.create({
-        grid: _connectionGrid
-    });
-
-    return Object.assign(_connectionGrid, {
-
-        printBorder: function printBorder() {
-            var row = "";
-            var lim = _x * 2;
-            for (var i = 0; i < lim; i++) {
-                row += i === 0 ? " " : "_";
+  spec = spec || {};
+  var _x = spec.x || 0;
+  var _y = spec.y || 0;
+  var _gridSpec = {
+    x: _x,
+    y: _y
+  };
+  var _connectionGrid = connectionGridFactory.Hexagon(_gridSpec);
+  if (!_connectionGrid) {
+    return null;
+  }
+  var obj = baseGrid.create({
+    grid: _connectionGrid
+  });
+  return Object.assign(_connectionGrid, {
+    printBorder: function printBorder() {
+      var row = "";
+      var lim = _x * 2;
+      for (var i = 0; i < lim; i++) {
+        row += i === 0 ? " " : "_";
+      }
+      console.log(row);
+    },
+    printBoard: function printBoard() {
+      console.log("HEXAGON MAZE: %d, %d", _x, _y);
+      var dirMap = this.dirMap;
+      var canvas = ascii.Canvas({
+        columns: _x * 2 + 1,
+        rows: _y * 2 + 2
+      });
+      for (var y = 0; y < _y; y++) {
+        var py = y * 2;
+        for (var x = 0; x < _x; x++) {
+          var cell = this.get(x, y);
+          var isGreen = this.isGreen(x, y);
+          if (cell !== 0) {
+            var px = x * 2;
+            var shifted = x % 2 !== 0;
+            var ry = py;
+            var nw = "NW";
+            var ne = "NE";
+            var sw = "W";
+            var se = "E";
+            if (shifted) {
+              ry = py + 1;
+              nw = "W";
+              ne = "E";
+              sw = "SW";
+              se = "SE";
             }
-            console.log(row);
-        },
-
-        printBoard: function printBoard() {
-            console.log("HEXAGON MAZE: %d, %d", _x, _y);
-            var dirMap = this.dirMap;
-            var canvas = ascii.Canvas({ columns: _x * 2 + 1, rows: _y * 2 + 2 });
-            for (var y = 0; y < _y; y++) {
-                var py = y * 2;
-                for (var x = 0; x < _x; x++) {
-                    var cell = this.get(x, y);
-                    var isGreen = this.isGreen(x, y);
-
-                    if (cell !== 0) {
-                        var px = x * 2;
-                        var shifted = x % 2 !== 0;
-                        var ry = py;
-                        var nw = "NW";
-                        var ne = "NE";
-                        var sw = "W";
-                        var se = "E";
-                        if (shifted) {
-                            ry = py + 1;
-                            nw = "W";
-                            ne = "E";
-                            sw = "SW";
-                            se = "SE";
-                        }
-
-                        if (isGreen) {
-                            canvas.set(px + 1, ry + 1, "\u233E");
-                        }
-
-                        if (!this.connects(x, y, "N")) {
-                            canvas.set(px + 1, ry, "_");
-                        }
-
-                        if (!this.connects(x, y, nw)) {
-                            canvas.set(px, ry + 1, "/");
-                        }
-
-                        if (!this.connects(x, y, ne)) {
-                            canvas.set(px + 2, ry + 1, "\\");
-                        }
-
-                        if (!this.connects(x, y, sw)) {
-                            canvas.set(px, ry + 2, "\\");
-                        }
-
-                        if (!this.connects(x, y, "S")) {
-                            canvas.set(px + 1, ry + 2, "_");
-                        }
-
-                        if (!this.connects(x, y, se)) {
-                            canvas.set(px + 2, ry + 2, "/");
-                        }
-                    }
-                }
+            if (isGreen) {
+              canvas.set(px + 1, ry + 1, "\u233E");
             }
-
-            canvas.print();
+            if (!this.connects(x, y, "N")) {
+              canvas.set(px + 1, ry, "_");
+            }
+            if (!this.connects(x, y, nw)) {
+              canvas.set(px, ry + 1, "/");
+            }
+            if (!this.connects(x, y, ne)) {
+              canvas.set(px + 2, ry + 1, "\\");
+            }
+            if (!this.connects(x, y, sw)) {
+              canvas.set(px, ry + 2, "\\");
+            }
+            if (!this.connects(x, y, "S")) {
+              canvas.set(px + 1, ry + 2, "_");
+            }
+            if (!this.connects(x, y, se)) {
+              canvas.set(px + 2, ry + 2, "/");
+            }
+          }
         }
-    });
+      }
+      canvas.print();
+    }
+  });
 };
 
 },{"./ascii-canvas":5,"@mitchallen/connection-grid":1,"@mitchallen/maze-generator-core":3}],8:[function(_dereq_,module,exports){
@@ -5549,21 +5516,19 @@ module.exports = function (spec) {
 "use strict";
 
 var squareMaze = _dereq_('@mitchallen/maze-generator-square').create,
-    hexagonMaze = _dereq_('./hexagon'),
-    triangleMaze = _dereq_('./triangle'),
-    circleMaze = _dereq_('./circle');
-
+  hexagonMaze = _dereq_('./hexagon'),
+  triangleMaze = _dereq_('./triangle'),
+  circleMaze = _dereq_('./circle');
 var createMaze = function createMaze(spec) {
-    console.warn("@mitchallen/maze-generator: .create is deprecated. Use .Square instead.");
-    return squareMaze(spec);
+  console.warn("@mitchallen/maze-generator: .create is deprecated. Use .Square instead.");
+  return squareMaze(spec);
 };
-
 module.exports = {
-    create: createMaze,
-    Square: squareMaze,
-    Hexagon: hexagonMaze,
-    Triangle: triangleMaze,
-    Circle: circleMaze
+  create: createMaze,
+  Square: squareMaze,
+  Hexagon: hexagonMaze,
+  Triangle: triangleMaze,
+  Circle: circleMaze
 };
 
 },{"./circle":6,"./hexagon":7,"./triangle":9,"@mitchallen/maze-generator-square":4}],9:[function(_dereq_,module,exports){
@@ -5578,122 +5543,106 @@ module.exports = {
 "use strict";
 
 var connectionGridFactory = _dereq_("@mitchallen/connection-grid"),
-    baseGrid = _dereq_("@mitchallen/maze-generator-core"),
-    ascii = _dereq_("./ascii-canvas");
-
+  baseGrid = _dereq_("@mitchallen/maze-generator-core"),
+  ascii = _dereq_("./ascii-canvas");
 module.exports = function (spec) {
+  spec = spec || {};
+  var _x = spec.x || 0;
+  var _y = spec.y || 0;
+  var _gridSpec = {
+    x: _x,
+    y: _y
+  };
+  var _connectionGrid = connectionGridFactory.Triangle(_gridSpec);
+  if (!_connectionGrid) {
+    return null;
+  }
+  var obj = baseGrid.create({
+    grid: _connectionGrid
+  });
+  return Object.assign(_connectionGrid, {
+    printBorder: function printBorder() {
+      var row = "";
+      var lim = _x * 2;
+      for (var i = 0; i < lim; i++) {
+        row += i === 0 ? " " : "_";
+      }
+      console.log(row);
+    },
+    printBoard: function printBoard() {
+      console.log("TRIANGLE MAZE: %d, %d", _x, _y);
+      var dirMap = this.dirMap;
+      var canvas = ascii.Canvas({
+        columns: _x * 3,
+        rows: _y * 3
+      });
+      var UP = 0x01,
+        DOWN = 0x02;
+      for (var y = 0; y < _y; y++) {
+        for (var x = 0; x < _x; x++) {
+          //     __
+          //   /\  /\
+          //  /__\/__\
+          //  \  /\  /
+          //   \/__\/
 
-    spec = spec || {};
+          var tDir = (x + y) % 2 === 0 ? UP : DOWN;
+          var cell = this.get(x, y);
+          var px = x * 2;
+          var py = y * 2 + 1;
+          if (cell !== 0) {
+            if (tDir == UP) {
+              //   /\  
+              //  /__\
 
-    var _x = spec.x || 0;
-    var _y = spec.y || 0;
+              // West Wall 
+              if (!this.connects(x, y, "W")) {
+                canvas.set(px + 1, py, "/");
+                canvas.set(px, py + 1, "/");
+              }
+              // East Wall
+              if (!this.connects(x, y, "E")) {
+                canvas.set(px + 3, py + 1, "\\");
+                canvas.set(px + 2, py, "\\");
+              }
+              // South Wall
+              if (!this.connects(x, y, "S")) {
+                canvas.set(px + 1, py + 1, "_");
+                canvas.set(px + 2, py + 1, "_");
+              }
+            } else {
+              //  __
+              // \  /
+              //  \/
 
-    var _gridSpec = {
-        x: _x,
-        y: _y
-    };
+              // North Wall Border (only draw for first row)
+              if (y === 0) {
+                canvas.set(px, py - 1, "_");
+                canvas.set(px + 1, py - 1, "_");
+                canvas.set(px + 2, py - 1, "_");
+                canvas.set(px + 3, py - 1, "_");
+              }
 
-    var _connectionGrid = connectionGridFactory.Triangle(_gridSpec);
-    if (!_connectionGrid) {
-        return null;
-    }
+              // West Wall (only draw for first column)
+              if (y % 2 !== 0 && x === 0) {
+                // console.log("x: %d, y: %d", x, y);
+                canvas.set(px, py, "\\");
+                canvas.set(px + 1, py + 1, "\\");
+              }
 
-    var obj = baseGrid.create({
-        grid: _connectionGrid
-    });
-
-    return Object.assign(_connectionGrid, {
-
-        printBorder: function printBorder() {
-            var row = "";
-            var lim = _x * 2;
-            for (var i = 0; i < lim; i++) {
-                row += i === 0 ? " " : "_";
+              // East Wall Border (only draw at end)
+              if (x === _x - 1) {
+                // console.log("x: %d, y: %d", x, y);
+                canvas.set(px + 3, py, "/");
+                canvas.set(px + 2, py + 1, "/");
+              }
             }
-            console.log(row);
-        },
-
-        printBoard: function printBoard() {
-            console.log("TRIANGLE MAZE: %d, %d", _x, _y);
-            var dirMap = this.dirMap;
-            var canvas = ascii.Canvas({ columns: _x * 3, rows: _y * 3 });
-
-            var UP = 0x01,
-                DOWN = 0x02;
-
-            for (var y = 0; y < _y; y++) {
-                for (var x = 0; x < _x; x++) {
-
-                    //     __
-                    //   /\  /\
-                    //  /__\/__\
-                    //  \  /\  /
-                    //   \/__\/
-
-                    var tDir = (x + y) % 2 === 0 ? UP : DOWN;
-
-                    var cell = this.get(x, y);
-
-                    var px = x * 2;
-                    var py = y * 2 + 1;
-
-                    if (cell !== 0) {
-
-                        if (tDir == UP) {
-
-                            //   /\  
-                            //  /__\
-
-                            // West Wall 
-                            if (!this.connects(x, y, "W")) {
-                                canvas.set(px + 1, py, "/");
-                                canvas.set(px, py + 1, "/");
-                            }
-                            // East Wall
-                            if (!this.connects(x, y, "E")) {
-                                canvas.set(px + 3, py + 1, "\\");
-                                canvas.set(px + 2, py, "\\");
-                            }
-                            // South Wall
-                            if (!this.connects(x, y, "S")) {
-                                canvas.set(px + 1, py + 1, "_");
-                                canvas.set(px + 2, py + 1, "_");
-                            }
-                        } else {
-
-                            //  __
-                            // \  /
-                            //  \/
-
-                            // North Wall Border (only draw for first row)
-                            if (y === 0) {
-                                canvas.set(px, py - 1, "_");
-                                canvas.set(px + 1, py - 1, "_");
-                                canvas.set(px + 2, py - 1, "_");
-                                canvas.set(px + 3, py - 1, "_");
-                            }
-
-                            // West Wall (only draw for first column)
-                            if (y % 2 !== 0 && x === 0) {
-                                // console.log("x: %d, y: %d", x, y);
-                                canvas.set(px, py, "\\");
-                                canvas.set(px + 1, py + 1, "\\");
-                            }
-
-                            // East Wall Border (only draw at end)
-                            if (x === _x - 1) {
-                                // console.log("x: %d, y: %d", x, y);
-                                canvas.set(px + 3, py, "/");
-                                canvas.set(px + 2, py + 1, "/");
-                            }
-                        }
-                    }
-                }
-            }
-
-            canvas.print();
+          }
         }
-    });
+      }
+      canvas.print();
+    }
+  });
 };
 
 },{"./ascii-canvas":5,"@mitchallen/connection-grid":1,"@mitchallen/maze-generator-core":3}]},{},[8])(8)
