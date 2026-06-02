@@ -3,9 +3,6 @@
     Author: Mitch Allen
 */
 
-/*jshint node: true */
-/*jshint esversion: 6 */
-
 "use strict";
 
 var squareMaze = require('@mitchallen/maze-generator-square').create,
