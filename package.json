@@ -21,6 +21,9 @@
   },
   "author": "Mitch Allen <npm@mitchallen.com> (http://mitchallen.com)",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "devDependencies": {
     "esbuild": "^0.28.0",
     "eslint": "^10.4.1",
