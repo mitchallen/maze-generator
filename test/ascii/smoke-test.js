@@ -9,8 +9,7 @@
 
 "use strict";
 
-var request = require('supertest'),
-    should = require('should'),
+var should = require('should'),
     // Not: modulePath = "../../dist/maze-generator";
     modulePath = "../../src/ascii-canvas";
 
