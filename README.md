@@ -206,7 +206,7 @@ To cut a new release:
 
 ```sh
 npm version patch   # or minor / major
-git push origin master --tags
+git push origin main --tags
 ```
 
 Then go to **GitHub → Releases → Draft a new release**, pick the tag, and publish. The [publish workflow](.github/workflows/publish.yml) handles the rest.
