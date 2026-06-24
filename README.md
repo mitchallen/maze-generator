@@ -4,6 +4,7 @@ maze generator
 
 [![CI](https://github.com/mitchallen/maze-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/mitchallen/maze-generator/actions/workflows/ci.yml)
 [![Publish](https://github.com/mitchallen/maze-generator/actions/workflows/publish.yml/badge.svg)](https://github.com/mitchallen/maze-generator/actions/workflows/publish.yml)
+[![codecov](https://codecov.io/gh/mitchallen/maze-generator/branch/main/graph/badge.svg)](https://codecov.io/gh/mitchallen/maze-generator)
 [![Version](https://img.shields.io/github/package-json/v/mitchallen/maze-generator)](https://github.com/mitchallen/maze-generator/pkgs/npm/maze-generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
