@@ -23,9 +23,6 @@ module.exports = (spec) => {
     };
 
     var _connectionGrid = connectionGridFactory.Triangle(_gridSpec);
-    if(!_connectionGrid) {
-        return null;
-    }
 
     var obj = baseGrid.create( {
         grid: _connectionGrid,

@@ -49,6 +49,15 @@ describe('Square method', function() {
         done();
     });
 
+    it('deprecated create() should return a square maze', function(done) {
+        var origWarn = console.warn;
+        console.warn = function() {};
+        var mazeGenerator = _module.create({ x: 5, y: 5 });
+        console.warn = origWarn;
+        should.exist(mazeGenerator);
+        done();
+    });
+
     it('with valid x and y parameters should return object', function(done) {
         var mazeGenerator = _module.Square({ x: 5, y: 5 });
         should.exist(mazeGenerator);

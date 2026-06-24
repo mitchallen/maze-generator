@@ -215,4 +215,14 @@ describe('Triangle smoke test', function() {
         mazeGenerator.printBoard();
         done();
     });
+
+    it('printBorder should not throw', function(done) {
+        var mazeGenerator = _module.Triangle({ x: 5, y: 6 });
+        should.exist(mazeGenerator);
+        var origLog = console.log;
+        console.log = function() {};
+        mazeGenerator.printBorder();
+        console.log = origLog;
+        done();
+    });
 });
