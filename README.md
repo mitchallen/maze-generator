@@ -12,22 +12,40 @@ maze generator
 
 ## Installation
 
-This package is published to **GitHub Packages**, not the public npm registry.
+This package — and its `@mitchallen` dependencies — is published to the
+**GitHub Packages** registry, not the public npm registry. Installing requires
+authentication even though the packages are public, so you need a GitHub
+personal access token with the `read:packages` scope.
 
 ### 1. Create a GitHub personal access token
 
-Go to **GitHub → Settings → Developer settings → Personal access tokens** and create a token with the `read:packages` scope.
+Go to **GitHub → Settings → Developer settings → Personal access tokens** and
+create a token with the `read:packages` scope.
 
-### 2. Configure your project's `.npmrc`
+### 2. Route the `@mitchallen` scope to GitHub Packages
 
-Add the following to your project's `.npmrc` (or `~/.npmrc` for a global config):
+Add **only** this line to your project's `.npmrc`. It contains no secret and is
+safe to commit:
 
 ```
 @mitchallen:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
 ```
 
-### 3. Install
+### 3. Add your token to your user-level config (not the repo)
+
+Store the token in your **user** `~/.npmrc` so it never lands in the
+repository:
+
+```sh
+npm config set //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN --location=user
+```
+
+> ⚠️ Do **not** put the `_authToken` line in your project's `.npmrc` — if it is
+> committed, your token is exposed. Keep it in `~/.npmrc`. In CI, set the
+> `NODE_AUTH_TOKEN` environment variable instead and reference it with
+> `//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}`.
+
+### 4. Install
 
 ```sh
 npm install @mitchallen/maze-generator
