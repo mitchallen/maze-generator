@@ -10,7 +10,7 @@
 "use strict";
 
 var should = require('should'),
-    modulePath = "../../dist/maze-generator";
+    modulePath = "../../src/index";
 
 describe('Hexagon smoke test', function() {
 

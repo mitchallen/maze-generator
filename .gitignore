@@ -2,3 +2,6 @@ node_modules/
 npm-debug.log*
 test-reports.xml
 .DS_Store
+
+coverage/
+lcov.info
