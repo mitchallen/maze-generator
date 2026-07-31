@@ -3,6 +3,9 @@
   "version": "0.1.31",
   "description": "maze generator",
   "main": "dist/maze-generator.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "node build.js",
     "lint": "eslint src/",
