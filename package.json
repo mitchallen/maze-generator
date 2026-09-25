@@ -10,7 +10,7 @@
     "build": "node build.js",
     "lint": "eslint src/",
     "test": "node build.js && mocha --recursive --timeout 20000",
-    "coverage": "node build.js && c8 --include='src/**' --reporter=lcovonly --reporter=text mocha --recursive --timeout 20000",
+    "coverage": "node build.js && c8 --check-coverage --100 --include='src/**' --reporter=text mocha --recursive --timeout 20000",
     "test-hexagon": "mocha --recursive test/hexagon/ --timeout 5000",
     "test-square": "mocha --recursive test/square/ --timeout 5000",
     "test-triangle": "mocha --recursive test/triangle/ --timeout 5000",
