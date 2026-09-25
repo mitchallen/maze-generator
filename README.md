@@ -4,7 +4,7 @@ maze generator
 
 [![CI](https://github.com/mitchallen/maze-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/mitchallen/maze-generator/actions/workflows/ci.yml)
 [![Publish](https://github.com/mitchallen/maze-generator/actions/workflows/publish.yml/badge.svg)](https://github.com/mitchallen/maze-generator/actions/workflows/publish.yml)
-[![codecov](https://codecov.io/gh/mitchallen/maze-generator/branch/main/graph/badge.svg)](https://codecov.io/gh/mitchallen/maze-generator)
+[![Coverage: 100%](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/mitchallen/maze-generator/actions/workflows/ci.yml?query=branch%3Amain)
 [![Version](https://img.shields.io/github/package-json/v/mitchallen/maze-generator)](https://github.com/mitchallen/maze-generator/pkgs/npm/maze-generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -16,6 +16,8 @@ This package — and its `@mitchallen` dependencies — is published to the
 **GitHub Packages** registry, not the public npm registry. Installing requires
 authentication even though the packages are public, so you need a GitHub
 personal access token with the `read:packages` scope.
+
+Versions **0.1.28** and earlier remain on npmjs.org and are no longer updated there.
 
 ### 1. Create a GitHub personal access token
 
