@@ -9,141 +9,124 @@
 
 "use strict";
 
-var should = require('should'),
+const { describe, it, before, after, beforeEach, afterEach } = require('node:test');
+var assert = require('node:assert/strict'),
     modulePath = "../../src/index";
 
 describe('Circle smoke test', function() {
 
     var _module = null;
 
-    before(function(done) {
+    before(function() {
         // Call before all tests
         delete require.cache[require.resolve(modulePath)];
         _module = require(modulePath);
-        done();
     });
 
-    after(function(done) {
+    after(function() {
         // Call after all tests
-        done();
     });
 
-    beforeEach(function(done) {
+    beforeEach(function() {
         // Call before each test
-        done();
     });
 
-    afterEach(function(done) {
+    afterEach(function() {
         // Call after eeach test
-        done();
     });
 
-    it('module should exist', function(done) {
-        should.exist(_module);
-        done();
+    it('module should exist', function() {
+        assert.ok(_module != null);
     });
 
-    it('with no spec should return object', function(done) {
+    it('with no spec should return object', function() {
         var mazeGenerator = _module.Circle();
-        should.exist(mazeGenerator);
-        done();
+        assert.ok(mazeGenerator != null);
     });
 
-    it('with valid rings parameters should return object', function(done) {
+    it('with valid rings parameters should return object', function() {
         var mazeGenerator = _module.Circle({ rings: 5 });
-        should.exist(mazeGenerator);
-        done();
+        assert.ok(mazeGenerator != null);
     });
 
-    it('generate 0 method should generate an empty maze', function(done) {
+    it('generate 0 method should generate an empty maze', function() {
         var mazeGenerator = _module.Circle({ rings: 0 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate -1 method should generate an empty maze', function(done) {
+    it('generate -1 method should generate an empty maze', function() {
         var mazeGenerator = _module.Circle({ rings: -1 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate -1 x -1 method should normalize rings to 0', function(done) {
+    it('generate -1 x -1 method should normalize rings to 0', function() {
         var mazeGenerator = _module.Circle({ rings: -1 });
-        mazeGenerator.rings.should.eql(0);
-        done();
+        assert.deepStrictEqual(mazeGenerator.rings, 0);
     });
 
-    it('generate 1 method should generate a maze', function(done) {
+    it('generate 1 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 1 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 2 method should generate a maze', function(done) {
+    it('generate 2 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 2 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 3 method should generate a maze', function(done) {
+    it('generate 3 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 3 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 4 method should generate a maze', function(done) {
+    it('generate 4 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 4 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 5 method should generate a maze', function(done) {
+    it('generate 5 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 10 method should generate a maze', function(done) {
+    it('generate 10 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 10 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 15 method should generate a maze', function(done) {
+    it('generate 15 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 15 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 20 method should generate a maze', function(done) {
+    it('generate 20 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 20 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate start should start the maze in a new location', function(done) {
+    it('generate start should start the maze in a new location', function() {
         var mazeGenerator = _module.Circle({ rings: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 3, r: 3 },
             mask: [
@@ -155,12 +138,11 @@ describe('Circle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate mask should mask parts of the maze', function(done) {
+    it('generate mask should mask parts of the maze', function() {
         var mazeGenerator = _module.Circle({ rings: 6 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 3, r: 3 },
             mask: [
@@ -171,12 +153,11 @@ describe('Circle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate mask should mask center parts of the maze', function(done) {
+    it('generate mask should mask center parts of the maze', function() {
         var mazeGenerator = _module.Circle({ rings: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 4, r: 0 },
             mask: [
@@ -188,24 +169,21 @@ describe('Circle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate called twice should generate two valid and distinct mazes', function(done) {
+    it('generate called twice should generate two valid and distinct mazes', function() {
         var mazeGenerator = _module.Circle({ rings: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 7 method should generate a maze', function(done) {
+    it('generate 7 method should generate a maze', function() {
         var mazeGenerator = _module.Circle({ rings: 7 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 });

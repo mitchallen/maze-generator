@@ -9,81 +9,71 @@
 
 "use strict";
 
-var should = require('should'),
+const { describe, it, before, after, beforeEach, afterEach } = require('node:test');
+var assert = require('node:assert/strict'),
     modulePath = "../../src/index";
 
 describe('Triangle smoke test', function() {
 
     var _module = null;
 
-    before(function(done) {
+    before(function() {
         // Call before all tests
         delete require.cache[require.resolve(modulePath)];
         _module = require(modulePath);
-        done();
     });
 
-    after(function(done) {
+    after(function() {
         // Call after all tests
-        done();
     });
 
-    beforeEach(function(done) {
+    beforeEach(function() {
         // Call before each test
-        done();
     });
 
-    afterEach(function(done) {
+    afterEach(function() {
         // Call after eeach test
-        done();
     });
 
-    it('module should exist', function(done) {
-        should.exist(_module);
-        done();
+    it('module should exist', function() {
+        assert.ok(_module != null);
     });
 
-    it('with no spec should return object', function(done) {
+    it('with no spec should return object', function() {
         var mazeGenerator = _module.Triangle();
-        should.exist(mazeGenerator);
-        done();
+        assert.ok(mazeGenerator != null);
     });
 
-    it('with valid x and y parameters should return object', function(done) {
+    it('with valid x and y parameters should return object', function() {
         var mazeGenerator = _module.Triangle({ x: 5, y: 5 });
-        should.exist(mazeGenerator);
-        done();
+        assert.ok(mazeGenerator != null);
     });
 
-    it('generate 0 x 0 method should generate an empty maze', function(done) {
+    it('generate 0 x 0 method should generate an empty maze', function() {
         var mazeGenerator = _module.Triangle({ x: 0, y: 0 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate -1 x -1 method should generate an empty maze', function(done) {
+    it('generate -1 x -1 method should generate an empty maze', function() {
         var mazeGenerator = _module.Triangle({ x: -1, y: -1 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate -1 x -1 method should normalize x and y to 0', function(done) {
+    it('generate -1 x -1 method should normalize x and y to 0', function() {
         var mazeGenerator = _module.Triangle({ x: -1, y: -1 });
-        mazeGenerator.xSize.should.eql(0);
-        mazeGenerator.ySize.should.eql(0);
-        done();
+        assert.deepStrictEqual(mazeGenerator.xSize, 0);
+        assert.deepStrictEqual(mazeGenerator.ySize, 0);
     });
 
-    it('generate 1 x 1 method should generate a maze', function(done) {
+    it('generate 1 x 1 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 1, y: 1 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
     // it('generate 1 x 2 method should generate a maze', function(done) {
@@ -94,67 +84,60 @@ describe('Triangle smoke test', function() {
     //     done();
     // });
 
-    it('generate 2 x 1 method should generate a maze', function(done) {
+    it('generate 2 x 1 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 2, y: 1 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 5 x 5 method should generate a maze', function(done) {
+    it('generate 5 x 5 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 5, y: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 10 x 5 method should generate a maze', function(done) {
+    it('generate 10 x 5 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 10, y: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 10 x 10 method should generate a maze', function(done) {
+    it('generate 10 x 10 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 10, y: 10 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 20 x 15 method should generate a maze', function(done) {
+    it('generate 20 x 15 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 20, y: 15 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate 20 x 20 method should generate a maze', function(done) {
+    it('generate 20 x 20 method should generate a maze', function() {
         var mazeGenerator = _module.Triangle({ x: 20, y: 20 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate called twice should generate two valid and distinct mazes', function(done) {
+    it('generate called twice should generate two valid and distinct mazes', function() {
         var mazeGenerator = _module.Triangle({ x: 10, y: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         mazeGenerator.generate();
         mazeGenerator.printBoard();
         mazeGenerator.generate();
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate start should start the maze in a new location', function(done) {
+    it('generate start should start the maze in a new location', function() {
         var mazeGenerator = _module.Triangle({ x: 5, y: 6 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 3, r: 3 },
             mask: [
@@ -166,12 +149,11 @@ describe('Triangle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate mask should mask parts of the maze', function(done) {
+    it('generate mask should mask parts of the maze', function() {
         var mazeGenerator = _module.Triangle({ x: 5, y: 6 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 3, r: 3 },
             mask: [
@@ -182,12 +164,11 @@ describe('Triangle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate mask should mask center parts of the maze', function(done) {
+    it('generate mask should mask center parts of the maze', function() {
         var mazeGenerator = _module.Triangle({ x: 10, y: 6 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 0, r: 0 },
             mask: [
@@ -199,12 +180,11 @@ describe('Triangle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('generate should use depth function', function(done) {
+    it('generate should use depth function', function() {
         var mazeGenerator = _module.Triangle({ x: 5, y: 5 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         let spec = {
             start: { c: 0, r: 0 },
             depthFunction: function (depth, maxDepth) { 
@@ -213,16 +193,14 @@ describe('Triangle smoke test', function() {
         };
         mazeGenerator.generate(spec);
         mazeGenerator.printBoard();
-        done();
     });
 
-    it('printBorder should not throw', function(done) {
+    it('printBorder should not throw', function() {
         var mazeGenerator = _module.Triangle({ x: 5, y: 6 });
-        should.exist(mazeGenerator);
+        assert.ok(mazeGenerator != null);
         var origLog = console.log;
         console.log = function() {};
         mazeGenerator.printBorder();
         console.log = origLog;
-        done();
     });
 });

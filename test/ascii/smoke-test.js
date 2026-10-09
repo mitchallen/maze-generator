@@ -9,7 +9,8 @@
 
 "use strict";
 
-var should = require('should'),
+const { describe, it, before, after, beforeEach, afterEach } = require('node:test');
+var assert = require('node:assert/strict'),
     // Not: modulePath = "../../dist/maze-generator";
     modulePath = "../../src/ascii-canvas";
 
@@ -17,64 +18,55 @@ describe('Ascii module', function() {
 
     var _module = null;
 
-    before(function(done) {
+    before(function() {
         // Call before all tests
         delete require.cache[require.resolve(modulePath)];
         _module = require(modulePath);
-        done();
     });
 
-    after(function(done) {
+    after(function() {
         // Call after all tests
-        done();
     });
 
-    beforeEach(function(done) {
+    beforeEach(function() {
         // Call before each test
-        done();
     });
 
-    afterEach(function(done) {
+    afterEach(function() {
         // Call after eeach test
-        done();
     });
 
-    it('module should exist', function(done) {
-        should.exist(_module);
-        done();
+    it('module should exist', function() {
+        assert.ok(_module != null);
     });
 
-    it('Canvas with no spec should return object', function(done) {
+    it('Canvas with no spec should return object', function() {
         var ascii = _module.Canvas();
-        should.exist(ascii);
-        done();
+        assert.ok(ascii != null);
     });
 
-    it('with valid x and y parameters should return object', function(done) {
+    it('with valid x and y parameters should return object', function() {
         var ascii = _module.Canvas({ columns: 10, rows: 5 });
-        should.exist(ascii);
-        done();
+        assert.ok(ascii != null);
     });
 
-    it('should print canvas', function(done) {
+    it('should print canvas', function() {
         var ascii = _module.Canvas({ columns: 10, rows: 5 });
         ascii.set(0,0,'#');
         ascii.print();
         ascii.log();
-        done();
     });
 
-    it('should fill canvas with fill parameter', function(done) {
+    it('should fill canvas with fill parameter', function() {
         var ascii = _module.Canvas({ columns: 10, rows: 5, fill: "." });
         // ascii.fill('@');
         ascii.set(0,0,'A');
         ascii.set(0,1,'B');
         ascii.print();
         ascii.log();
-        done();
     });
 
-    it('should put rows in rows', function(done) {
+    it('should put rows in rows', function() {
         var ascii = _module.Canvas({ columns: 10, rows: 5, fill: "." });
         // ascii.fill('@');
         ascii.set(0,0,'H');
@@ -89,7 +81,6 @@ describe('Ascii module', function() {
         ascii.set(4,1,'D');
         ascii.print();
         ascii.log();
-        done();
     });
 
 });
