@@ -9,15 +9,15 @@
   "scripts": {
     "build": "node build.js",
     "lint": "eslint src/",
-    "test": "node build.js && mocha --recursive --timeout 20000",
-    "coverage": "node build.js && c8 --check-coverage --100 --include='src/**' --reporter=text mocha --recursive --timeout 20000",
-    "test-hexagon": "mocha --recursive test/hexagon/ --timeout 5000",
-    "test-square": "mocha --recursive test/square/ --timeout 5000",
-    "test-triangle": "mocha --recursive test/triangle/ --timeout 5000",
-    "test-circle": "mocha --recursive test/circle/ --timeout 5000",
-    "test-ascii": "mocha --recursive test/ascii/ --timeout 5000",
-    "test-debug": "mocha -g '@DEBUG' --recursive --timeout 20000",
-    "test-jenkins": "node build.js && mocha --recursive --timeout 20000 -R xunit test/ > test-reports.xml"
+    "test": "node build.js && node --test 'test/**/*.js'",
+    "coverage": "node build.js && node --test --experimental-test-coverage --test-coverage-include='src/**' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 'test/**/*.js'",
+    "test-hexagon": "node --test 'test/hexagon/**/*.js'",
+    "test-square": "node --test 'test/square/**/*.js'",
+    "test-triangle": "node --test 'test/triangle/**/*.js'",
+    "test-circle": "node --test 'test/circle/**/*.js'",
+    "test-ascii": "node --test 'test/ascii/**/*.js'",
+    "test-debug": "node --test --test-name-pattern='@DEBUG' 'test/**/*.js'",
+    "test-jenkins": "node build.js && node --test --test-reporter=junit --test-reporter-destination=test-reports.xml 'test/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -29,11 +29,8 @@
     "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
-    "c8": "^12.0.0",
     "esbuild": "^0.28.1",
-    "eslint": "^10.4.1",
-    "mocha": "^12.0.2",
-    "should": "^13.2.3"
+    "eslint": "^10.4.1"
   },
   "dependencies": {
     "@mitchallen/connection-grid": "^0.1.34",
@@ -41,11 +38,5 @@
     "@mitchallen/grid": "^0.1.25",
     "@mitchallen/maze-generator-core": "^0.1.13",
     "@mitchallen/maze-generator-square": "^0.1.24"
-  },
-  "overrides": {
-    "diff": "^8.0.3",
-    "js-yaml": "^5.2.2",
-    "minimatch": ">=3.1.4",
-    "serialize-javascript": ">=7.0.5"
   }
 }
